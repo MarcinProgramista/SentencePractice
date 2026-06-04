@@ -1,8 +1,12 @@
 import express from "express";
-import { getSentenses } from "../controllers/sentenceController.js";
+import {
+  getSentenses,
+  createSentence,
+} from "../controllers/sentenceController.js";
 
 const router = express.Router();
 
 router.get("/", getSentenses);
+router.post("/", createSentence);
 
 export default router;
