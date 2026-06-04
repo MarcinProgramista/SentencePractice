@@ -98,3 +98,24 @@ export const deleteSentence = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const searchSentences = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    const result = await db.query(
+      `
+      SELECT *
+      FROM sentences
+      WHERE source_text ILIKE $1
+         OR target_text ILIKE $1
+      ORDER BY id
+      `,
+      [`%${q}%`],
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
