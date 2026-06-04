@@ -145,3 +145,53 @@ export const getSentenceById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+/* ==============================
+    UPDATE SENTENCE
+=================================*/
+export const updateSentence = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      source_language_id,
+      target_language_id,
+      source_text,
+      target_text,
+      audio_file,
+    } = req.body;
+
+    const result = await db.query(
+      `
+      UPDATE sentences
+      SET
+        source_language_id = $1,
+        target_language_id = $2,
+        source_text = $3,
+        target_text = $4,
+        audio_file = $5
+      WHERE id = $6
+      RETURNING *
+      `,
+      [
+        source_language_id,
+        target_language_id,
+        source_text,
+        target_text,
+        audio_file,
+        id,
+      ],
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        error: "Sentence not found",
+      });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log("updateSentence error", error);
+    res.status(500).json({ error: error.message });
+  }
+};
