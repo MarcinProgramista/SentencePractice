@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import db from "./db.js";
+import sentenceRoutes from "./routes/sentenceRoutes.js";
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.get("/test-db", async (req, res) => {
 app.get("/", (req, res) => {
   res.json({ message: "Language Learning API" });
 });
-
+app.use("/api/sentences", sentenceRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
