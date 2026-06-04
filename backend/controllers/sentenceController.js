@@ -66,3 +66,35 @@ export const createSentence = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+/* ==============================
+    DELETE SENTENCE
+=================================*/
+export const deleteSentence = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      `
+      DELETE FROM sentences
+      WHERE id = $1
+      RETURNING *
+      `,
+      [id],
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({
+        error: "Sentence not found",
+      });
+    }
+
+    res.json({
+      message: "Sentence deleted",
+      sentence: result.rows[0],
+    });
+  } catch (error) {
+    console.log("deleteSentence error", error);
+    res.status(500).json({ error: error.message });
+  }
+};
