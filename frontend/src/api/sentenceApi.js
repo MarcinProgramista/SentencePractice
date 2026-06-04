@@ -1,0 +1,18 @@
+import axios from "axios";
+
+const API_URL = "http://localhost:3000/api/sentences";
+
+export const getSentences = async () => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
+
+export const getSentenceById = async (id) => {
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
+};
+
+export const searchSentences = async (query) => {
+  const response = await axios.get(`${API_URL}/search?q=${query}`);
+  return response.data;
+};
