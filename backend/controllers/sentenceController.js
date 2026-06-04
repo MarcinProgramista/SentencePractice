@@ -3,12 +3,25 @@ import db from "../db.js";
 /* ==============================
     GET ALL SENTENCES 
 =================================*/
-export const getSentenses = async (req, res) => {
+export const getSentences = async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM sentences ORDER BY id", []);
+    const result = await db.query(`
+    SELECT
+        s.*,
+        sl.code AS source_language_code,
+        tl.code AS target_language_code,
+        sl.name AS source_language_name,
+        tl.name AS target_language_name
+    FROM sentences s
+    JOIN languages sl
+        ON s.source_language_id = sl.id
+    JOIN languages tl
+        ON s.target_language_id = tl.id
+    ORDER BY s.id
+`);
     res.json(result.rows);
   } catch (error) {
-    console.log("getSentenses error", error);
+    console.log("getSentences error", error);
     res.status(500).json({ error: error.message });
   }
 };
