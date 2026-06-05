@@ -1,5 +1,5 @@
 import db from "../db.js";
-
+import { generateAudio } from "../services/ttsService.js";
 /* ==============================
     GET ALL SENTENCES 
 =================================*/
@@ -31,13 +31,10 @@ export const getSentences = async (req, res) => {
 =================================*/
 export const createSentence = async (req, res) => {
   try {
-    const {
-      source_language_id,
-      target_language_id,
-      source_text,
-      target_text,
-      audio_file,
-    } = req.body;
+    const { source_language_id, target_language_id, source_text, target_text } =
+      req.body;
+
+    const audio_file = await generateAudio(target_text);
 
     const result = await db.query(
       `
