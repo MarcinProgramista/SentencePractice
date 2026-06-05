@@ -55,7 +55,13 @@ function App() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        maxWidth: "700px",
+        margin: "0 auto",
+        padding: "20px",
+      }}
+    >
       <h1>Language Learning</h1>
 
       <input
@@ -63,51 +69,46 @@ function App() {
         placeholder="Search..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        style={{
+          width: "100%",
+          maxWidth: "300px",
+          padding: "12px",
+          marginBottom: "15px",
+          borderRadius: "8px",
+          border: "1px solid #3b4252",
+          backgroundColor: "#1e2330",
+          color: "#eceff4",
+          boxSizing: "border-box",
+        }}
       />
 
       <SentenceList
         sentences={filteredSentences}
         onSentenceClick={handleSentenceClick}
         selectedSentence={selectedSentence}
+        showAnswer={showAnswer}
+        setShowAnswer={setShowAnswer}
       />
 
       {selectedSentence && (
         <>
           <hr />
 
-          <button onClick={() => setShowAnswer(!showAnswer)}>
-            {showAnswer ? "Hide Answer" : "Show Answer"}
-          </button>
-          <div style={{ marginTop: "10px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              marginTop: "15px",
+            }}
+          >
             <button onClick={handlePrevious}>Previous</button>
 
-            <button style={{ marginLeft: "10px" }} onClick={handleNext}>
-              Next
-            </button>
+            <button onClick={handleNext}>Next</button>
           </div>
-          {showAnswer && (
-            <>
-              <p>{selectedSentence.target_text}</p>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "20px",
-                }}
-              >
-                <audio controls>
-                  <source
-                    src={`http://localhost:3000/audio/${selectedSentence.audio_file}`}
-                    type="audio/mpeg"
-                  />
-                </audio>
-              </div>
-            </>
-          )}
         </>
       )}
-    </>
+    </div>
   );
 }
 
