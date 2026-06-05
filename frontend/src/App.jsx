@@ -27,6 +27,32 @@ function App() {
     setSelectedSentence(sentence);
     setShowAnswer(false);
   };
+  const handleNext = () => {
+    if (!selectedSentence) return;
+
+    const currentIndex = filteredSentences.findIndex(
+      (sentence) => sentence.id === selectedSentence.id,
+    );
+
+    if (currentIndex < filteredSentences.length - 1) {
+      setSelectedSentence(filteredSentences[currentIndex + 1]);
+
+      setShowAnswer(false);
+    }
+  };
+  const handlePrevious = () => {
+    if (!selectedSentence) return;
+
+    const currentIndex = filteredSentences.findIndex(
+      (sentence) => sentence.id === selectedSentence.id,
+    );
+
+    if (currentIndex > 0) {
+      setSelectedSentence(filteredSentences[currentIndex - 1]);
+
+      setShowAnswer(false);
+    }
+  };
 
   return (
     <>
@@ -49,16 +75,18 @@ function App() {
         <>
           <hr />
 
-          <h3>English</h3>
-          <p>{selectedSentence.source_text}</p>
-
           <button onClick={() => setShowAnswer(!showAnswer)}>
             {showAnswer ? "Hide Answer" : "Show Answer"}
           </button>
+          <div style={{ marginTop: "10px" }}>
+            <button onClick={handlePrevious}>Previous</button>
 
+            <button style={{ marginLeft: "10px" }} onClick={handleNext}>
+              Next
+            </button>
+          </div>
           {showAnswer && (
             <>
-              <h3>German</h3>
               <p>{selectedSentence.target_text}</p>
 
               <div

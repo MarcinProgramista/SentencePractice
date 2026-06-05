@@ -12,7 +12,7 @@ function SentenceList({ sentences, onSentenceClick, selectedSentence }) {
               selectedSentence?.id === sentence.id ? "#2d3748" : "transparent",
           }}
         >
-          {sentence.source_text} → {sentence.target_text}
+          {sentence.source_text}
         </div>
       ))}
     </>
