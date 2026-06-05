@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { getSentences } from "./api/sentenceApi";
 import SentenceList from "./components/SentenceList";
@@ -9,13 +10,13 @@ function App() {
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getSentences();
-      setSentences(data);
-    };
+  const fetchSentences = async () => {
+    const data = await getSentences();
+    setSentences(data);
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchSentences();
   }, []);
 
   const filteredSentences = sentences.filter(
@@ -75,7 +76,7 @@ function App() {
         {showForm ? "Hide Form" : "Add Sentence"}
       </button>
 
-      {showForm && <AddSentenceForm />}
+      {showForm && <AddSentenceForm onSentenceAdded={fetchSentences} />}
       <br />
       <input
         type="text"

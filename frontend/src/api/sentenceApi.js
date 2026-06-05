@@ -16,3 +16,9 @@ export const searchSentences = async (query) => {
   const response = await axios.get(`${API_URL}/search?q=${query}`);
   return response.data;
 };
+
+export const createSentence = async (sentence) => {
+  const response = await axios.post(API_URL, sentence);
+
+  return response.data;
+};

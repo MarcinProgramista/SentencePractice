@@ -1,9 +1,28 @@
 import { useState } from "react";
-
-function AddSentenceForm() {
+import { createSentence } from "../api/sentenceApi";
+function AddSentenceForm({ onSentenceAdded }) {
   const [sourceText, setSourceText] = useState("");
   const [targetText, setTargetText] = useState("");
+  const handleAddSentence = async () => {
+    try {
+      const sentence = {
+        source_language_id: 1,
+        target_language_id: 2,
+        source_text: sourceText,
+        target_text: targetText,
+        audio_file: "",
+      };
 
+      await createSentence(sentence);
+
+      await onSentenceAdded();
+
+      setSourceText("");
+      setTargetText("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div
       style={{
@@ -56,7 +75,9 @@ function AddSentenceForm() {
         />
       </div>
 
-      <button type="button">Add Sentence</button>
+      <button type="button" onClick={handleAddSentence}>
+        Add Sentence
+      </button>
     </div>
   );
 }
