@@ -74,7 +74,7 @@ function App() {
   return (
     <div
       style={{
-        maxWidth: "700px",
+        maxWidth: "800px",
         margin: "0 auto",
         padding: "20px",
       }}
@@ -118,13 +118,22 @@ function App() {
         }}
       />
 
-      <SentenceList
-        sentences={filteredSentences}
-        onSentenceClick={handleSentenceClick}
-        selectedSentence={selectedSentence}
-        showAnswer={showAnswer}
-        setShowAnswer={setShowAnswer}
-      />
+      <div
+        style={{
+          maxHeight: "500px",
+          overflowY: "auto",
+          overflowX: "hidden",
+          marginTop: "15px",
+        }}
+      >
+        <SentenceList
+          sentences={filteredSentences}
+          onSentenceClick={handleSentenceClick}
+          selectedSentence={selectedSentence}
+          showAnswer={showAnswer}
+          setShowAnswer={setShowAnswer}
+        />
+      </div>
 
       {selectedSentence && (
         <>
