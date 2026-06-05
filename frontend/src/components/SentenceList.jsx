@@ -3,7 +3,9 @@ function SentenceList({ sentences }) {
     <>
       {sentences.map((sentence) => (
         <div key={sentence.id}>
-          {sentence.source_text} → {sentence.target_text}
+          <strong>{sentence.source_text}</strong>
+          <br />
+          {sentence.target_text}
         </div>
       ))}
     </>
