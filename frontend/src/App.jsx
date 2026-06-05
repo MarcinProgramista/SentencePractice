@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getSentences } from "./api/sentenceApi";
-import { useState } from "react";
+import SentenceList from "./components/SentenceList";
 
 function App() {
   const [sentences, setSentences] = useState([]);
@@ -18,11 +18,7 @@ function App() {
     <>
       <h1>Language Learning</h1>
 
-      {sentences.map((sentence) => (
-        <div key={sentence.id}>
-          {sentence.source_text} → {sentence.target_text}
-        </div>
-      ))}
+      <SentenceList sentences={sentences} />
     </>
   );
 }
