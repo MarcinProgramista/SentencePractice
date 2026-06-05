@@ -32,6 +32,7 @@ function App() {
       <SentenceList
         sentences={filteredSentences}
         onSentenceClick={setSelectedSentence}
+        selectedSentence={selectedSentence}
       />
       {selectedSentence && (
         <>
@@ -39,9 +40,26 @@ function App() {
 
           <h2>Selected sentence</h2>
 
+          <h3>English</h3>
           <p>{selectedSentence.source_text}</p>
+
+          <h3>German</h3>
           <p>{selectedSentence.target_text}</p>
-          <p>Audio: {selectedSentence.audio_file}</p>
+          <p>{selectedSentence.audio_file}</p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+            }}
+          >
+            <audio controls>
+              <source
+                src={`http://localhost:3000/audio/${selectedSentence.audio_file}`}
+                type="audio/mpeg"
+              />
+            </audio>
+          </div>
         </>
       )}
     </>
