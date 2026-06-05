@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import { getSentences } from "./api/sentenceApi";
+import { getSentences, deleteSentence } from "./api/sentenceApi";
 import SentenceList from "./components/SentenceList";
 import AddSentenceForm from "./components/AddSentenceForm";
 
@@ -55,7 +55,20 @@ function App() {
       setShowAnswer(false);
     }
   };
+  const handleDeleteSentence = async () => {
+    if (!selectedSentence) return;
 
+    try {
+      await deleteSentence(selectedSentence.id);
+
+      await fetchSentences();
+
+      setSelectedSentence(null);
+      setShowAnswer(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div
       style={{
@@ -126,7 +139,16 @@ function App() {
             >
               Previous
             </button>
-
+            <button
+              onClick={handleDeleteSentence}
+              style={{
+                marginBottom: "15px",
+                padding: "10px 20px",
+                borderRadius: "8px",
+              }}
+            >
+              Delete
+            </button>
             <button
               onClick={handleNext}
               style={{

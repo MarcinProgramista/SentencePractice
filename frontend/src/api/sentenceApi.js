@@ -22,3 +22,9 @@ export const createSentence = async (sentence) => {
 
   return response.data;
 };
+
+export const deleteSentence = async (id) => {
+  const response = await axios.delete(`${API_URL}/${id}`);
+
+  return response.data;
+};
