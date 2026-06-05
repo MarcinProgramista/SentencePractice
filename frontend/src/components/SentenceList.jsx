@@ -35,17 +35,6 @@ function SentenceList({
 
           {selectedSentence?.id === sentence.id && (
             <>
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowAnswer(!showAnswer);
-                  }}
-                >
-                  {showAnswer ? "Hide Answer" : "Show Answer"}
-                </button>
-              </div>
-
               {showAnswer && (
                 <>
                   <div style={{ marginTop: "15px" }}>
@@ -68,6 +57,21 @@ function SentenceList({
                   </div>
                 </>
               )}
+              <div style={{ marginTop: "10px" }}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowAnswer(!showAnswer);
+                  }}
+                  style={{
+                    marginBottom: "15px",
+                    padding: "10px 20px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  {showAnswer ? "Hide Answer" : "Show Answer"}
+                </button>
+              </div>
             </>
           )}
         </div>

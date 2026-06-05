@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { getSentences } from "./api/sentenceApi";
 import SentenceList from "./components/SentenceList";
+import AddSentenceForm from "./components/AddSentenceForm";
 
 function App() {
   const [sentences, setSentences] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
-
+  const [showForm, setShowForm] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSentences();
@@ -63,7 +64,19 @@ function App() {
       }}
     >
       <h1>Language Learning</h1>
+      <button
+        onClick={() => setShowForm(!showForm)}
+        style={{
+          marginBottom: "15px",
+          padding: "10px 20px",
+          borderRadius: "8px",
+        }}
+      >
+        {showForm ? "Hide Form" : "Add Sentence"}
+      </button>
 
+      {showForm && <AddSentenceForm />}
+      <br />
       <input
         type="text"
         placeholder="Search..."
@@ -102,9 +115,27 @@ function App() {
               marginTop: "15px",
             }}
           >
-            <button onClick={handlePrevious}>Previous</button>
+            <button
+              onClick={handlePrevious}
+              style={{
+                marginBottom: "15px",
+                padding: "10px 20px",
+                borderRadius: "8px",
+              }}
+            >
+              Previous
+            </button>
 
-            <button onClick={handleNext}>Next</button>
+            <button
+              onClick={handleNext}
+              style={{
+                marginBottom: "15px",
+                padding: "10px 20px",
+                borderRadius: "8px",
+              }}
+            >
+              Next
+            </button>
           </div>
         </>
       )}
