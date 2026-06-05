@@ -4,6 +4,8 @@ import SentenceList from "./components/SentenceList";
 
 function App() {
   const [sentences, setSentences] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectedSentence, setSelectedSentence] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,12 +15,34 @@ function App() {
 
     fetchData();
   }, []);
-
+  const filteredSentences = sentences.filter(
+    (sentence) =>
+      sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
+      sentence.target_text.toLowerCase().includes(search.toLowerCase()),
+  );
   return (
     <>
       <h1>Language Learning</h1>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <SentenceList
+        sentences={filteredSentences}
+        onSentenceClick={setSelectedSentence}
+      />
+      {selectedSentence && (
+        <>
+          <hr />
 
-      <SentenceList sentences={sentences} />
+          <h2>Selected sentence</h2>
+
+          <p>{selectedSentence.source_text}</p>
+          <p>{selectedSentence.target_text}</p>
+        </>
+      )}
     </>
   );
 }

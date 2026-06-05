@@ -1,11 +1,9 @@
-function SentenceList({ sentences }) {
+function SentenceList({ sentences, onSentenceClick }) {
   return (
     <>
       {sentences.map((sentence) => (
-        <div key={sentence.id}>
-          <strong>{sentence.source_text}</strong>
-          <br />
-          {sentence.target_text}
+        <div key={sentence.id} onClick={() => onSentenceClick(sentence)}>
+          {sentence.source_text} → {sentence.target_text}
         </div>
       ))}
     </>
