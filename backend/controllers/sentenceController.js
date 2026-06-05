@@ -1,5 +1,6 @@
 import db from "../db.js";
 import { generateAudio } from "../services/ttsService.js";
+import fs from "fs/promises";
 /* ==============================
     GET ALL SENTENCES 
 =================================*/
@@ -71,24 +72,42 @@ export const deleteSentence = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await db.query(
+    const sentenceResult = await db.query(
       `
-      DELETE FROM sentences
+      SELECT *
+      FROM sentences
       WHERE id = $1
-      RETURNING *
       `,
       [id],
     );
 
-    if (result.rowCount === 0) {
+    if (sentenceResult.rowCount === 0) {
       return res.status(404).json({
         error: "Sentence not found",
       });
     }
 
+    const sentence = sentenceResult.rows[0];
+
+    if (sentence.audio_file) {
+      try {
+        await fs.unlink(`audio/${sentence.audio_file}`);
+      } catch (error) {
+        console.log("Audio file not found:", error.message);
+      }
+    }
+
+    await db.query(
+      `
+      DELETE FROM sentences
+      WHERE id = $1
+      `,
+      [id],
+    );
+
     res.json({
       message: "Sentence deleted",
-      sentence: result.rows[0],
+      sentence,
     });
   } catch (error) {
     console.log("deleteSentence error", error);
@@ -150,13 +169,35 @@ export const updateSentence = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const {
-      source_language_id,
-      target_language_id,
-      source_text,
-      target_text,
-      audio_file,
-    } = req.body;
+    const { source_language_id, target_language_id, source_text, target_text } =
+      req.body;
+
+    const existingSentence = await db.query(
+      `
+      SELECT *
+      FROM sentences
+      WHERE id = $1
+      `,
+      [id],
+    );
+
+    if (existingSentence.rowCount === 0) {
+      return res.status(404).json({
+        error: "Sentence not found",
+      });
+    }
+
+    const oldSentence = existingSentence.rows[0];
+
+    if (oldSentence.audio_file) {
+      try {
+        await fs.unlink(`audio/${oldSentence.audio_file}`);
+      } catch (error) {
+        console.log("Audio file not found:", error.message);
+      }
+    }
+
+    const audio_file = await generateAudio(target_text);
 
     const result = await db.query(
       `
@@ -179,12 +220,6 @@ export const updateSentence = async (req, res) => {
         id,
       ],
     );
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({
-        error: "Sentence not found",
-      });
-    }
 
     res.json(result.rows[0]);
   } catch (error) {
