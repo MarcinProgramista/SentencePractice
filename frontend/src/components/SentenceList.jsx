@@ -13,7 +13,7 @@ function SentenceList({
         alignItems: "center",
       }}
     >
-      {sentences.map((sentence) => (
+      {sentences.map((sentence, index) => (
         <div
           key={sentence.id}
           onClick={() => onSentenceClick(sentence)}
@@ -31,7 +31,17 @@ function SentenceList({
             textAlign: "center",
           }}
         >
-          <div>{sentence.source_text}</div>
+          <span
+            style={{
+              marginRight: "10px",
+              color: "#888",
+              fontWeight: "bold",
+            }}
+          >
+            {String(index + 1).padStart(3, "0")}
+          </span>
+
+          <span>{sentence.source_text}</span>
 
           {selectedSentence?.id === sentence.id && (
             <>
