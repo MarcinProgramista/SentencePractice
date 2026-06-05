@@ -41,6 +41,7 @@ function App() {
 
           <p>{selectedSentence.source_text}</p>
           <p>{selectedSentence.target_text}</p>
+          <p>Audio: {selectedSentence.audio_file}</p>
         </>
       )}
     </>
