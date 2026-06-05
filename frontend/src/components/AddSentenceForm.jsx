@@ -1,10 +1,26 @@
-import { useState } from "react";
-import { createSentence } from "../api/sentenceApi";
-function AddSentenceForm({ onSentenceAdded }) {
+/* eslint-disable react-hooks/set-state-in-effect */
+import { useEffect, useState } from "react";
+import { createSentence, updateSentence } from "../api/sentenceApi";
+function AddSentenceForm({
+  onSentenceAdded,
+  editingSentence,
+  setEditingSentence,
+  setShowForm,
+}) {
   const [sourceText, setSourceText] = useState("");
   const [targetText, setTargetText] = useState("");
+  useEffect(() => {
+    if (editingSentence) {
+      setSourceText(editingSentence.source_text);
+      setTargetText(editingSentence.target_text);
+    }
+  }, [editingSentence]);
   const handleAddSentence = async () => {
     try {
+      if (!sourceText.trim() || !targetText.trim()) {
+        return;
+      }
+
       const sentence = {
         source_language_id: 1,
         target_language_id: 2,
@@ -13,7 +29,14 @@ function AddSentenceForm({ onSentenceAdded }) {
         audio_file: "",
       };
 
-      await createSentence(sentence);
+      if (editingSentence) {
+        await updateSentence(editingSentence.id, sentence);
+
+        setEditingSentence(null);
+        setShowForm(false);
+      } else {
+        await createSentence(sentence);
+      }
 
       await onSentenceAdded();
 
@@ -33,7 +56,7 @@ function AddSentenceForm({ onSentenceAdded }) {
         backgroundColor: "#1e2330",
       }}
     >
-      <h2>Add Sentence</h2>
+      {editingSentence ? <h2>Update Sentence</h2> : <h2>Add Sentence</h2>}
 
       <div style={{ marginBottom: "10px" }}>
         <label>English sentence</label>
@@ -76,7 +99,7 @@ function AddSentenceForm({ onSentenceAdded }) {
       </div>
 
       <button type="button" onClick={handleAddSentence}>
-        Add Sentence
+        {editingSentence ? "Update Sentence" : "Add Sentence"}
       </button>
     </div>
   );

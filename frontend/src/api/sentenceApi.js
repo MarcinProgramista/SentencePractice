@@ -28,3 +28,9 @@ export const deleteSentence = async (id) => {
 
   return response.data;
 };
+
+export const updateSentence = async (id, sentence) => {
+  const response = await axios.put(`${API_URL}/${id}`, sentence);
+
+  return response.data;
+};

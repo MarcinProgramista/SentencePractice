@@ -10,6 +10,8 @@ function App() {
   const [selectedSentence, setSelectedSentence] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [editingSentence, setEditingSentence] = useState(null);
+
   const fetchSentences = async () => {
     const data = await getSentences();
     setSentences(data);
@@ -89,7 +91,14 @@ function App() {
         {showForm ? "Hide Form" : "Add Sentence"}
       </button>
 
-      {showForm && <AddSentenceForm onSentenceAdded={fetchSentences} />}
+      {showForm && (
+        <AddSentenceForm
+          onSentenceAdded={fetchSentences}
+          editingSentence={editingSentence}
+          setEditingSentence={setEditingSentence}
+          setShowForm={setShowForm}
+        />
+      )}
       <br />
       <input
         type="text"
@@ -138,6 +147,19 @@ function App() {
               }}
             >
               Previous
+            </button>
+            <button
+              onClick={() => {
+                setEditingSentence(selectedSentence);
+                setShowForm(true);
+              }}
+              style={{
+                marginBottom: "15px",
+                padding: "10px 20px",
+                borderRadius: "8px",
+              }}
+            >
+              Edit
             </button>
             <button
               onClick={handleDeleteSentence}
