@@ -211,3 +211,5 @@ mini_postman_cookies.json
 backend/project_dump.txt
 backend/audio/
 forontend/node_modules/
+audio/
+*.mp3

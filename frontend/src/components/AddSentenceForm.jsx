@@ -31,9 +31,7 @@ function AddSentenceForm({
 
       if (editingSentence) {
         await updateSentence(editingSentence.id, sentence);
-
         setEditingSentence(null);
-        setShowForm(false);
       } else {
         await createSentence(sentence);
       }
@@ -42,6 +40,8 @@ function AddSentenceForm({
 
       setSourceText("");
       setTargetText("");
+
+      setShowForm(false);
     } catch (error) {
       console.error(error);
     }

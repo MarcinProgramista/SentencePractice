@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { getSentences, deleteSentence } from "./api/sentenceApi";
-import SentenceList from "./components/SentenceList";
+import SentenceList from "./components/SentenceList.jsx";
 import AddSentenceForm from "./components/AddSentenceForm";
+import SentenceDetails from "./components/SentenceDetails";
 
 function App() {
   const [sentences, setSentences] = useState([]);
@@ -71,6 +72,12 @@ function App() {
       console.error(error);
     }
   };
+  const handleSentenceUpdated = async () => {
+    await fetchSentences();
+
+    setSelectedSentence(null);
+    setShowAnswer(false);
+  };
   return (
     <div
       style={{
@@ -93,7 +100,7 @@ function App() {
 
       {showForm && (
         <AddSentenceForm
-          onSentenceAdded={fetchSentences}
+          onSentenceAdded={handleSentenceUpdated}
           editingSentence={editingSentence}
           setEditingSentence={setEditingSentence}
           setShowForm={setShowForm}
@@ -120,10 +127,8 @@ function App() {
 
       <div
         style={{
-          maxHeight: "500px",
-          overflowY: "auto",
-          overflowX: "hidden",
-          marginTop: "15px",
+          display: "flex",
+          gap: "200px",
         }}
       >
         <SentenceList
@@ -133,6 +138,8 @@ function App() {
           showAnswer={showAnswer}
           setShowAnswer={setShowAnswer}
         />
+
+        <SentenceDetails selectedSentence={selectedSentence} />
       </div>
 
       {selectedSentence && (
