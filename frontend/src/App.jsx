@@ -139,7 +139,11 @@ function App() {
           setShowAnswer={setShowAnswer}
         />
 
-        <SentenceDetails selectedSentence={selectedSentence} />
+        <SentenceDetails
+          selectedSentence={selectedSentence}
+          showAnswer={showAnswer}
+          setShowAnswer={setShowAnswer}
+        />
       </div>
 
       {selectedSentence && (

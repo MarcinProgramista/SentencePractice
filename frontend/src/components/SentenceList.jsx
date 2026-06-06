@@ -45,43 +45,7 @@ function SentenceList({
 
           {selectedSentence?.id === sentence.id && (
             <>
-              {showAnswer && (
-                <>
-                  <div style={{ marginTop: "15px" }}>
-                    {sentence.target_text}
-                  </div>
-
-                  <div
-                    style={{
-                      marginTop: "15px",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <audio controls>
-                      <source
-                        src={`http://localhost:3000/audio/${sentence.audio_file}`}
-                        type="audio/mpeg"
-                      />
-                    </audio>
-                  </div>
-                </>
-              )}
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowAnswer(!showAnswer);
-                  }}
-                  style={{
-                    marginBottom: "15px",
-                    padding: "10px 20px",
-                    borderRadius: "8px",
-                  }}
-                >
-                  {showAnswer ? "Hide Answer" : "Show Answer"}
-                </button>
-              </div>
+              <div style={{ marginTop: "10px" }}></div>
             </>
           )}
         </div>
