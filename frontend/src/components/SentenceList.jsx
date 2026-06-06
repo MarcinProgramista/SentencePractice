@@ -1,10 +1,4 @@
-function SentenceList({
-  sentences,
-  onSentenceClick,
-  selectedSentence,
-  showAnswer,
-  setShowAnswer,
-}) {
+function SentenceList({ sentences, onSentenceClick, selectedSentence }) {
   return (
     <div
       style={{
@@ -18,7 +12,7 @@ function SentenceList({
           key={sentence.id}
           onClick={() => onSentenceClick(sentence)}
           style={{
-            width: "100%",
+            width: "90%",
             maxWidth: "500px",
             cursor: "pointer",
             padding: "12px",
@@ -28,7 +22,7 @@ function SentenceList({
             backgroundColor:
               selectedSentence?.id === sentence.id ? "#4c566a" : "#1e2330",
             color: "#eceff4",
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
           <span

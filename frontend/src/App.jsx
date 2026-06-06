@@ -81,8 +81,8 @@ function App() {
   return (
     <div
       style={{
-        maxWidth: "800px",
-        margin: "0 auto",
+        maxWidth: "none",
+
         padding: "20px",
       }}
     >
@@ -128,22 +128,38 @@ function App() {
       <div
         style={{
           display: "flex",
-          gap: "200px",
+
+          alignItems: "flex-start",
         }}
       >
-        <SentenceList
-          sentences={filteredSentences}
-          onSentenceClick={handleSentenceClick}
-          selectedSentence={selectedSentence}
-          showAnswer={showAnswer}
-          setShowAnswer={setShowAnswer}
-        />
-
-        <SentenceDetails
-          selectedSentence={selectedSentence}
-          showAnswer={showAnswer}
-          setShowAnswer={setShowAnswer}
-        />
+        <div
+          style={{
+            width: "500px",
+            borderRight: "1px solid #3b4252",
+          }}
+        >
+          <SentenceList
+            sentences={filteredSentences}
+            onSentenceClick={handleSentenceClick}
+            selectedSentence={selectedSentence}
+            showAnswer={showAnswer}
+            setShowAnswer={setShowAnswer}
+          />
+        </div>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <SentenceDetails
+            selectedSentence={selectedSentence}
+            showAnswer={showAnswer}
+            setShowAnswer={setShowAnswer}
+          />
+        </div>
       </div>
 
       {selectedSentence && (

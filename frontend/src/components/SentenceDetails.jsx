@@ -5,15 +5,33 @@ function SentenceDetails({ selectedSentence, showAnswer, setShowAnswer }) {
 
   return (
     <div>
-      <h2>{selectedSentence.source_text}</h2>
+      <h1
+        onClick={() => setShowAnswer(!showAnswer)}
+        style={{ cursor: "pointer" }}
+      >
+        {selectedSentence.source_text}
+      </h1>
 
-      <button onClick={() => setShowAnswer(!showAnswer)}>
-        {showAnswer ? "Hide Answer" : "Show Answer"}
-      </button>
-
+      {!showAnswer && (
+        <p
+          style={{
+            color: "#888",
+            fontSize: "0.9rem",
+          }}
+        >
+          Click sentence to reveal translation
+        </p>
+      )}
       {showAnswer && (
         <>
-          <div>{selectedSentence.target_text}</div>
+          <h1
+            style={{
+              color: "green",
+              fontStyle: "italic",
+            }}
+          >
+            {selectedSentence.target_text}
+          </h1>
 
           <audio controls>
             <source
