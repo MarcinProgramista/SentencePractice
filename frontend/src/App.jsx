@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import SentenceList from "./components/SentenceList.jsx";
 import AddSentenceForm from "./components/AddSentenceForm";
 import SentenceDetails from "./components/SentenceDetails";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { getParts } from "./api/partApi";
 
 function App() {
   const [sentences, setSentences] = useState([]);
@@ -19,7 +21,21 @@ function App() {
   const [nextDelay, setNextDelay] = useState(2);
   const [autoReveal, setAutoReveal] = useState(false);
   const [repeatCount, setRepeatCount] = useState(1);
+  const [parts, setParts] = useState([]);
+  const [selectedPartId, setSelectedPartId] = useState(1);
+  useEffect(() => {
+    const fetchParts = async () => {
+      const data = await getParts();
 
+      setParts(data);
+
+      if (data.length > 0) {
+        setSelectedPartId(data[0].id);
+      }
+    };
+
+    fetchParts();
+  }, []);
   const fetchSentences = async () => {
     const data = await getSentences();
     setSentences(data);
@@ -31,10 +47,10 @@ function App() {
 
   const filteredSentences = sentences.filter(
     (sentence) =>
-      sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
-      sentence.target_text.toLowerCase().includes(search.toLowerCase()),
+      sentence.part_id === selectedPartId &&
+      (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
+        sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );
-
   const handleSentenceClick = (sentence) => {
     setSelectedSentence(sentence);
     setShowAnswer(false);
@@ -123,6 +139,27 @@ function App() {
             textAlign: "left",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              flexWrap: "wrap",
+              marginBottom: "15px",
+            }}
+          >
+            {parts.map((part) => (
+              <button
+                key={part.id}
+                onClick={() => setSelectedPartId(part.id)}
+                style={{
+                  backgroundColor:
+                    selectedPartId === part.id ? "#5e81ac" : "#2e3440",
+                }}
+              >
+                {part.level_name} - {part.name}
+              </button>
+            ))}
+          </div>
           <button
             onClick={() => setShowForm(!showForm)}
             style={{
