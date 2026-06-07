@@ -58,16 +58,16 @@ function App() {
       setShowAnswer(false);
     }
   };
-  const handleDeleteSentence = async () => {
-    if (!selectedSentence) return;
-
+  const handleDeleteSentence = async (sentenceId) => {
     try {
-      await deleteSentence(selectedSentence.id);
+      await deleteSentence(sentenceId);
 
       await fetchSentences();
 
-      setSelectedSentence(null);
-      setShowAnswer(false);
+      if (selectedSentence?.id === sentenceId) {
+        setSelectedSentence(null);
+        setShowAnswer(false);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -144,6 +144,7 @@ function App() {
             selectedSentence={selectedSentence}
             showAnswer={showAnswer}
             setShowAnswer={setShowAnswer}
+            handleDeleteSentence={handleDeleteSentence}
           />
         </div>
         <div
@@ -197,16 +198,7 @@ function App() {
             >
               Edit
             </button>
-            <button
-              onClick={handleDeleteSentence}
-              style={{
-                marginBottom: "15px",
-                padding: "10px 20px",
-                borderRadius: "8px",
-              }}
-            >
-              Delete
-            </button>
+
             <button
               onClick={handleNext}
               style={{

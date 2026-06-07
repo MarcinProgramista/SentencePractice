@@ -1,4 +1,9 @@
-function SentenceList({ sentences, onSentenceClick, selectedSentence }) {
+function SentenceList({
+  sentences,
+  onSentenceClick,
+  selectedSentence,
+  handleDeleteSentence,
+}) {
   return (
     <div
       style={{
@@ -58,7 +63,16 @@ function SentenceList({ sentences, onSentenceClick, selectedSentence }) {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  // delete
+
+                  const confirmed = window.confirm(
+                    `Delete sentence?\n\n${sentence.source_text}`,
+                  );
+
+                  if (!confirmed) {
+                    return;
+                  }
+
+                  handleDeleteSentence(sentence.id);
                 }}
               >
                 Delete
