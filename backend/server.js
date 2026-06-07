@@ -6,7 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import sentenceRoutes from "./routes/sentenceRoutes.js";
 import languageRoutes from "./routes/languageRoutes.js";
-
+import partRoutes from "./routes/partRoutes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -29,6 +29,7 @@ app.get("/", (req, res) => {
 app.use("/audio", express.static(path.join(__dirname, "audio")));
 app.use("/api/languages", languageRoutes);
 app.use("/api/sentences", sentenceRoutes);
+app.use("/api/parts", partRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
