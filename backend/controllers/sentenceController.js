@@ -32,8 +32,13 @@ export const getSentences = async (req, res) => {
 =================================*/
 export const createSentence = async (req, res) => {
   try {
-    const { source_language_id, target_language_id, source_text, target_text } =
-      req.body;
+    const {
+      source_language_id,
+      target_language_id,
+      source_text,
+      target_text,
+      part_id,
+    } = req.body;
 
     const audio_file = await generateAudio(target_text);
 
@@ -44,9 +49,10 @@ export const createSentence = async (req, res) => {
         target_language_id,
         source_text,
         target_text,
-        audio_file
-      )
-      VALUES ($1, $2, $3, $4, $5)
+        audio_file,
+        part_id
+)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
       `,
       [
@@ -55,6 +61,7 @@ export const createSentence = async (req, res) => {
         source_text,
         target_text,
         audio_file,
+        part_id,
       ],
     );
 
@@ -169,8 +176,13 @@ export const updateSentence = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { source_language_id, target_language_id, source_text, target_text } =
-      req.body;
+    const {
+      source_language_id,
+      target_language_id,
+      source_text,
+      target_text,
+      part_id,
+    } = req.body;
 
     const existingSentence = await db.query(
       `
@@ -201,14 +213,15 @@ export const updateSentence = async (req, res) => {
 
     const result = await db.query(
       `
-      UPDATE sentences
+     UPDATE sentences
       SET
         source_language_id = $1,
         target_language_id = $2,
         source_text = $3,
         target_text = $4,
-        audio_file = $5
-      WHERE id = $6
+        audio_file = $5,
+        part_id = $6
+      WHERE id = $7
       RETURNING *
       `,
       [
@@ -217,6 +230,7 @@ export const updateSentence = async (req, res) => {
         source_text,
         target_text,
         audio_file,
+        part_id,
         id,
       ],
     );

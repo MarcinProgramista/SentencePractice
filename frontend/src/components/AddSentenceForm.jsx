@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { createSentence, updateSentence } from "../api/sentenceApi";
+import { getParts } from "../api/partApi";
 function AddSentenceForm({
   onSentenceAdded,
   editingSentence,
@@ -9,12 +11,32 @@ function AddSentenceForm({
 }) {
   const [sourceText, setSourceText] = useState("");
   const [targetText, setTargetText] = useState("");
+  const [parts, setParts] = useState([]);
+  const [selectedPartId, setSelectedPartId] = useState("");
   useEffect(() => {
     if (editingSentence) {
       setSourceText(editingSentence.source_text);
       setTargetText(editingSentence.target_text);
+      setSelectedPartId(editingSentence.part_id);
     }
   }, [editingSentence]);
+  useEffect(() => {
+    const fetchParts = async () => {
+      try {
+        const data = await getParts();
+
+        setParts(data);
+
+        if (data.length > 0 && !editingSentence) {
+          setSelectedPartId(data[0].id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchParts();
+  }, []);
   const handleAddSentence = async () => {
     try {
       if (!sourceText.trim() || !targetText.trim()) {
@@ -27,6 +49,7 @@ function AddSentenceForm({
         source_text: sourceText,
         target_text: targetText,
         audio_file: "",
+        part_id: selectedPartId,
       };
 
       if (editingSentence) {
@@ -80,6 +103,31 @@ function AddSentenceForm({
 
       <div style={{ marginBottom: "10px" }}>
         <label>German sentence</label>
+        <div style={{ marginBottom: "10px" }}>
+          <label>Part</label>
+          <br />
+
+          <select
+            value={selectedPartId}
+            onChange={(e) => setSelectedPartId(Number(e.target.value))}
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginTop: "5px",
+              borderRadius: "6px",
+              border: "1px solid #3b4252",
+              backgroundColor: "#2e3440",
+              color: "#eceff4",
+              boxSizing: "border-box",
+            }}
+          >
+            {parts.map((part) => (
+              <option key={part.id} value={part.id}>
+                {part.level_name} - {part.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <br />
         <input
           type="text"
