@@ -102,31 +102,8 @@ function App() {
     <div
       style={{
         maxWidth: "none",
-
-        padding: "20px",
       }}
     >
-      <h1>Language Learning</h1>
-      <button
-        onClick={() => setShowForm(!showForm)}
-        style={{
-          marginBottom: "15px",
-          padding: "10px 20px",
-          borderRadius: "8px",
-        }}
-      >
-        {showForm ? "Hide Form" : "Add Sentence"}
-      </button>
-
-      {showForm && (
-        <AddSentenceForm
-          onSentenceAdded={handleSentenceUpdated}
-          editingSentence={editingSentence}
-          setEditingSentence={setEditingSentence}
-          setShowForm={setShowForm}
-        />
-      )}
-
       <div
         style={{
           display: "flex",
@@ -142,6 +119,26 @@ function App() {
             textAlign: "left",
           }}
         >
+          <button
+            onClick={() => setShowForm(!showForm)}
+            style={{
+              marginBottom: "15px",
+              padding: "10px 20px",
+              borderRadius: "8px",
+            }}
+          >
+            {showForm ? "Hide Form" : "Add Sentence"}
+          </button>
+
+          {showForm && (
+            <AddSentenceForm
+              onSentenceAdded={handleSentenceUpdated}
+              editingSentence={editingSentence}
+              setEditingSentence={setEditingSentence}
+              setShowForm={setShowForm}
+            />
+          )}
+
           <input
             type="text"
             placeholder="Search..."

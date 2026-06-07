@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 function SentenceDetails({
   selectedSentence,
   showAnswer,
@@ -8,12 +8,15 @@ function SentenceDetails({
   autoReveal,
   repeatCount,
 }) {
+  const [playCount, setPlayCount] = useState(0);
   const audioRef = useRef(null);
   useEffect(() => {
     if (audioRef.current) {
+      setPlayCount(1);
+
       audioRef.current.load();
 
-      audioRef.current.play().catch((err) => {});
+      audioRef.current.play().catch(() => {});
     }
   }, [selectedSentence]);
   useEffect(() => {
@@ -39,7 +42,18 @@ function SentenceDetails({
       >
         {selectedSentence.target_text}
       </h1>
-      <audio ref={audioRef} controls>
+      <audio
+        ref={audioRef}
+        controls
+        onEnded={() => {
+          if (playCount < repeatCount) {
+            setPlayCount((prev) => prev + 1);
+
+            audioRef.current.currentTime = 0;
+            audioRef.current.play().catch(() => {});
+          }
+        }}
+      >
         <source
           src={`http://localhost:3000/audio/${selectedSentence.audio_file}`}
           type="audio/mpeg"
