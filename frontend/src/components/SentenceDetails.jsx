@@ -6,12 +6,11 @@ function SentenceDetails({
   showAnswer,
   setShowAnswer,
   autoReveal,
+  repeatCount,
 }) {
   const audioRef = useRef(null);
   useEffect(() => {
     if (audioRef.current) {
-      console.log("Audio element found");
-
       audioRef.current.load();
 
       audioRef.current.play().catch((err) => {});

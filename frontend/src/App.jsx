@@ -17,6 +17,7 @@ function App() {
   const [autoMode, setAutoMode] = useState(false);
   const [autoModeDelay, setAutoModeDelay] = useState(5);
   const [autoReveal, setAutoReveal] = useState(false);
+  const [repeatCount, setRepeatCount] = useState(1);
 
   const fetchSentences = async () => {
     const data = await getSentences();
@@ -125,55 +126,7 @@ function App() {
           setShowForm={setShowForm}
         />
       )}
-      <br />
-      <input
-        type="text"
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{
-          width: "100%",
-          maxWidth: "300px",
-          padding: "12px",
-          marginBottom: "15px",
-          borderRadius: "8px",
-          border: "1px solid #3b4252",
-          backgroundColor: "#1e2330",
-          color: "#eceff4",
-          boxSizing: "border-box",
-        }}
-      />
-      <br />
-      <label>
-        <input
-          type="checkbox"
-          checked={autoMode}
-          onChange={(e) => setAutoMode(e.target.checked)}
-        />
-        Auto Mode
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={autoReveal}
-          onChange={(e) => setAutoReveal(e.target.checked)}
-        />
-        Auto Reveal Translation
-      </label>
-      <br />
-      <label>
-        Delay:
-        <select
-          value={autoModeDelay}
-          onChange={(e) => setAutoModeDelay(Number(e.target.value))}
-        >
-          <option value={1}>1 second</option>
-          <option value={2}>2 seconds</option>
-          <option value={3}>3 seconds</option>
-          <option value={5}>5 seconds</option>
-          <option value={10}>10 seconds</option>
-        </select>
-      </label>
+
       <div
         style={{
           display: "flex",
@@ -185,8 +138,73 @@ function App() {
           style={{
             width: "500px",
             borderRight: "1px solid #3b4252",
+            padding: "10px",
+            textAlign: "left",
           }}
         >
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              width: "100%",
+              maxWidth: "300px",
+              padding: "12px",
+              marginBottom: "15px",
+              borderRadius: "8px",
+              border: "1px solid #3b4252",
+              backgroundColor: "#1e2330",
+              color: "#eceff4",
+              boxSizing: "border-box",
+            }}
+          />
+          <label style={{ display: "block", marginBottom: "8px" }}>
+            <input
+              type="checkbox"
+              checked={autoMode}
+              onChange={(e) => setAutoMode(e.target.checked)}
+            />
+            Auto Mode
+          </label>
+          <label style={{ display: "block", marginBottom: "8px" }}>
+            <input
+              type="checkbox"
+              checked={autoReveal}
+              onChange={(e) => setAutoReveal(e.target.checked)}
+            />
+            Auto Reveal Translation
+          </label>
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              Delay:
+              <select
+                value={autoModeDelay}
+                onChange={(e) => setAutoModeDelay(Number(e.target.value))}
+              >
+                <option value={1}>1 second</option>
+                <option value={2}>2 seconds</option>
+                <option value={3}>3 seconds</option>
+                <option value={5}>5 seconds</option>
+                <option value={10}>10 seconds</option>
+              </select>
+            </label>
+          </div>
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              Repeat audio:
+              <select
+                value={repeatCount}
+                onChange={(e) => setRepeatCount(Number(e.target.value))}
+              >
+                <option value={1}>1 time</option>
+                <option value={2}>2 times</option>
+                <option value={3}>3 times</option>
+                <option value={5}>5 times</option>
+              </select>
+            </label>
+          </div>
+
           <SentenceList
             sentences={filteredSentences}
             onSentenceClick={handleSentenceClick}
@@ -210,6 +228,7 @@ function App() {
             showAnswer={showAnswer}
             setShowAnswer={setShowAnswer}
             autoReveal={autoReveal}
+            repeatCount={repeatCount}
           />
         </div>
       </div>
