@@ -1,4 +1,20 @@
+import { useEffect, useRef } from "react";
 function SentenceDetails({ selectedSentence, showAnswer, setShowAnswer }) {
+  const audioRef = useRef(null);
+  useEffect(() => {
+    console.log("Sentence changed");
+    console.log(selectedSentence?.audio_file);
+
+    if (audioRef.current) {
+      console.log("Audio element found");
+
+      audioRef.current.load();
+
+      audioRef.current.play().catch((err) => {
+        console.log("PLAY ERROR", err);
+      });
+    }
+  }, [selectedSentence]);
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }
@@ -9,9 +25,14 @@ function SentenceDetails({ selectedSentence, showAnswer, setShowAnswer }) {
         onClick={() => setShowAnswer(!showAnswer)}
         style={{ cursor: "pointer" }}
       >
-        {selectedSentence.source_text}
+        {selectedSentence.target_text}
       </h1>
-
+      <audio ref={audioRef} controls>
+        <source
+          src={`http://localhost:3000/audio/${selectedSentence.audio_file}`}
+          type="audio/mpeg"
+        />
+      </audio>
       {!showAnswer && (
         <p
           style={{
@@ -30,15 +51,8 @@ function SentenceDetails({ selectedSentence, showAnswer, setShowAnswer }) {
               fontStyle: "italic",
             }}
           >
-            {selectedSentence.target_text}
+            {selectedSentence.source_text}
           </h1>
-
-          <audio controls>
-            <source
-              src={`http://localhost:3000/audio/${selectedSentence.audio_file}`}
-              type="audio/mpeg"
-            />
-          </audio>
         </>
       )}
     </div>

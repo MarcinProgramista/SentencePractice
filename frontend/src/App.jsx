@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import { getSentences, deleteSentence } from "./api/sentenceApi";
@@ -13,6 +14,8 @@ function App() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingSentence, setEditingSentence] = useState(null);
+  const [autoMode, setAutoMode] = useState(false);
+  const [autoModeDelay, setAutoModeDelay] = useState(5);
 
   const fetchSentences = async () => {
     const data = await getSentences();
@@ -43,7 +46,7 @@ function App() {
     if (currentIndex < filteredSentences.length - 1) {
       setSelectedSentence(filteredSentences[currentIndex + 1]);
 
-      setShowAnswer(false);
+      // setShowAnswer(false);
     }
   };
   const handlePrevious = () => {
@@ -84,6 +87,15 @@ function App() {
     setEditingSentence(sentence);
     setShowForm(true);
   };
+  useEffect(() => {
+    if (!autoMode || !selectedSentence) return;
+
+    const timer = setTimeout(() => {
+      handleNext();
+    }, autoModeDelay * 1000);
+
+    return () => clearTimeout(timer);
+  }, [autoMode, selectedSentence]);
   return (
     <div
       style={{
@@ -130,11 +142,33 @@ function App() {
           boxSizing: "border-box",
         }}
       />
-
+      <br />
+      <label>
+        <input
+          type="checkbox"
+          checked={autoMode}
+          onChange={(e) => setAutoMode(e.target.checked)}
+        />
+        Auto Mode
+      </label>
+      <br />
+      <label>
+        Delay:
+        <select
+          value={autoModeDelay}
+          onChange={(e) => setAutoModeDelay(Number(e.target.value))}
+        >
+          <option value={1}>1 second</option>
+          <option value={2}>2 seconds</option>
+          <option value={3}>3 seconds</option>
+          <option value={5}>5 seconds</option>
+          <option value={10}>10 seconds</option>
+        </select>
+      </label>
       <div
         style={{
           display: "flex",
-
+          marginTop: "30px",
           alignItems: "flex-start",
         }}
       >

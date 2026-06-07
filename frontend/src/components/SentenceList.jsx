@@ -49,7 +49,7 @@ function SentenceList({
                 {String(index + 1).padStart(3, "0")}
               </span>
 
-              <span>{sentence.source_text}</span>
+              <span>{sentence.target_text}</span>
             </div>
 
             <div>
