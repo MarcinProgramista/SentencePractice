@@ -78,6 +78,11 @@ function App() {
     setSelectedSentence(null);
     setShowAnswer(false);
   };
+
+  const handleEditSentence = (sentence) => {
+    setEditingSentence(sentence);
+    setShowForm(true);
+  };
   return (
     <div
       style={{
@@ -145,6 +150,7 @@ function App() {
             showAnswer={showAnswer}
             setShowAnswer={setShowAnswer}
             handleDeleteSentence={handleDeleteSentence}
+            handleEditSentence={handleEditSentence}
           />
         </div>
         <div
@@ -184,19 +190,6 @@ function App() {
               }}
             >
               Previous
-            </button>
-            <button
-              onClick={() => {
-                setEditingSentence(selectedSentence);
-                setShowForm(true);
-              }}
-              style={{
-                marginBottom: "15px",
-                padding: "10px 20px",
-                borderRadius: "8px",
-              }}
-            >
-              Edit
             </button>
 
             <button

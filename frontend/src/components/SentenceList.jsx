@@ -3,6 +3,7 @@ function SentenceList({
   onSentenceClick,
   selectedSentence,
   handleDeleteSentence,
+  handleEditSentence,
 }) {
   return (
     <div
@@ -54,7 +55,7 @@ function SentenceList({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  // edit
+                  handleEditSentence(sentence);
                 }}
               >
                 Edit
