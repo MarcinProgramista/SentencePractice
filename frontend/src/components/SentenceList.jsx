@@ -1,3 +1,4 @@
+import { FaEdit, FaTrash } from "react-icons/fa";
 function SentenceList({
   sentences,
   onSentenceClick,
@@ -57,8 +58,15 @@ function SentenceList({
                   e.stopPropagation();
                   handleEditSentence(sentence);
                 }}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "16px",
+                  color: "#88c0d0",
+                }}
               >
-                Edit
+                <FaEdit />
               </button>
 
               <button
@@ -69,14 +77,20 @@ function SentenceList({
                     `Delete sentence?\n\n${sentence.source_text}`,
                   );
 
-                  if (!confirmed) {
-                    return;
-                  }
+                  if (!confirmed) return;
 
                   handleDeleteSentence(sentence.id);
                 }}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "16px",
+
+                  color: "#bf616a",
+                }}
               >
-                Delete
+                <FaTrash />
               </button>
             </div>
           </div>

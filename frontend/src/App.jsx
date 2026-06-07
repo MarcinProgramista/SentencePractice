@@ -4,6 +4,7 @@ import { getSentences, deleteSentence } from "./api/sentenceApi";
 import SentenceList from "./components/SentenceList.jsx";
 import AddSentenceForm from "./components/AddSentenceForm";
 import SentenceDetails from "./components/SentenceDetails";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function App() {
   const [sentences, setSentences] = useState([]);
@@ -187,20 +188,21 @@ function App() {
                 marginBottom: "15px",
                 padding: "10px 20px",
                 borderRadius: "8px",
+                background: "transparent",
               }}
             >
-              Previous
+              <FaArrowLeft /> Previous
             </button>
-
             <button
               onClick={handleNext}
               style={{
                 marginBottom: "15px",
                 padding: "10px 20px",
                 borderRadius: "8px",
+                background: "transparent",
               }}
             >
-              Next
+              <FaArrowRight /> Next
             </button>
           </div>
         </>
