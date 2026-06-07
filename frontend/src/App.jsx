@@ -15,7 +15,8 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [editingSentence, setEditingSentence] = useState(null);
   const [autoMode, setAutoMode] = useState(false);
-  const [autoModeDelay, setAutoModeDelay] = useState(5);
+  const [revealDelay, setRevealDelay] = useState(3);
+  const [nextDelay, setNextDelay] = useState(2);
   const [autoReveal, setAutoReveal] = useState(false);
   const [repeatCount, setRepeatCount] = useState(1);
 
@@ -92,9 +93,12 @@ function App() {
   useEffect(() => {
     if (!autoMode || !selectedSentence) return;
 
-    const timer = setTimeout(() => {
-      handleNext();
-    }, autoModeDelay * 1000);
+    const timer = setTimeout(
+      () => {
+        handleNext();
+      },
+      (revealDelay + nextDelay) * 1000,
+    );
 
     return () => clearTimeout(timer);
   }, [autoMode, selectedSentence]);
@@ -174,10 +178,26 @@ function App() {
           </label>
           <div style={{ marginBottom: "15px" }}>
             <label>
-              Delay:
+              Reveal Delay:
               <select
-                value={autoModeDelay}
-                onChange={(e) => setAutoModeDelay(Number(e.target.value))}
+                value={revealDelay}
+                onChange={(e) => setRevealDelay(Number(e.target.value))}
+              >
+                <option value={1}>1 second</option>
+                <option value={2}>2 seconds</option>
+                <option value={3}>3 seconds</option>
+                <option value={5}>5 seconds</option>
+                <option value={10}>10 seconds</option>
+              </select>
+            </label>
+          </div>
+
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              Next Delay:
+              <select
+                value={nextDelay}
+                onChange={(e) => setNextDelay(Number(e.target.value))}
               >
                 <option value={1}>1 second</option>
                 <option value={2}>2 seconds</option>
@@ -226,6 +246,7 @@ function App() {
             setShowAnswer={setShowAnswer}
             autoReveal={autoReveal}
             repeatCount={repeatCount}
+            revealDelay={revealDelay}
           />
         </div>
       </div>

@@ -7,6 +7,7 @@ function SentenceDetails({
   setShowAnswer,
   autoReveal,
   repeatCount,
+  revealDelay,
 }) {
   const [playCount, setPlayCount] = useState(0);
   const audioRef = useRef(null);
@@ -26,7 +27,7 @@ function SentenceDetails({
 
     const timer = setTimeout(() => {
       setShowAnswer(true);
-    }, 3000);
+    }, revealDelay * 1000);
 
     return () => clearTimeout(timer);
   }, [selectedSentence, autoReveal]);
