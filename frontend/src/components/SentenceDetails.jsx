@@ -1,20 +1,33 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef } from "react";
-function SentenceDetails({ selectedSentence, showAnswer, setShowAnswer }) {
+function SentenceDetails({
+  selectedSentence,
+  showAnswer,
+  setShowAnswer,
+  autoReveal,
+}) {
   const audioRef = useRef(null);
   useEffect(() => {
-    console.log("Sentence changed");
-    console.log(selectedSentence?.audio_file);
-
     if (audioRef.current) {
       console.log("Audio element found");
 
       audioRef.current.load();
 
-      audioRef.current.play().catch((err) => {
-        console.log("PLAY ERROR", err);
-      });
+      audioRef.current.play().catch((err) => {});
     }
   }, [selectedSentence]);
+  useEffect(() => {
+    if (!autoReveal || !selectedSentence) return;
+
+    setShowAnswer(false);
+
+    const timer = setTimeout(() => {
+      setShowAnswer(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [selectedSentence, autoReveal]);
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }

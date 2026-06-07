@@ -16,6 +16,7 @@ function App() {
   const [editingSentence, setEditingSentence] = useState(null);
   const [autoMode, setAutoMode] = useState(false);
   const [autoModeDelay, setAutoModeDelay] = useState(5);
+  const [autoReveal, setAutoReveal] = useState(false);
 
   const fetchSentences = async () => {
     const data = await getSentences();
@@ -151,6 +152,14 @@ function App() {
         />
         Auto Mode
       </label>
+      <label>
+        <input
+          type="checkbox"
+          checked={autoReveal}
+          onChange={(e) => setAutoReveal(e.target.checked)}
+        />
+        Auto Reveal Translation
+      </label>
       <br />
       <label>
         Delay:
@@ -200,6 +209,7 @@ function App() {
             selectedSentence={selectedSentence}
             showAnswer={showAnswer}
             setShowAnswer={setShowAnswer}
+            autoReveal={autoReveal}
           />
         </div>
       </div>
