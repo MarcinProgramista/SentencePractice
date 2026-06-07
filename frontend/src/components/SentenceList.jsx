@@ -22,26 +22,49 @@ function SentenceList({ sentences, onSentenceClick, selectedSentence }) {
             backgroundColor:
               selectedSentence?.id === sentence.id ? "#4c566a" : "#1e2330",
             color: "#eceff4",
-            textAlign: "left",
           }}
         >
-          <span
+          <div
             style={{
-              marginRight: "10px",
-              color: "#888",
-              fontWeight: "bold",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            {String(index + 1).padStart(3, "0")}
-          </span>
+            <div>
+              <span
+                style={{
+                  marginRight: "10px",
+                  color: "#888",
+                  fontWeight: "bold",
+                }}
+              >
+                {String(index + 1).padStart(3, "0")}
+              </span>
 
-          <span>{sentence.source_text}</span>
+              <span>{sentence.source_text}</span>
+            </div>
 
-          {selectedSentence?.id === sentence.id && (
-            <>
-              <div style={{ marginTop: "10px" }}></div>
-            </>
-          )}
+            <div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // edit
+                }}
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // delete
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       ))}
     </div>
