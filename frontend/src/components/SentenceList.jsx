@@ -50,19 +50,27 @@ function SentenceList({
               </span>
 
               <span>{sentence.target_text}</span>
+            </div>
 
+            <div>
               <span
                 style={{
-                  marginLeft: "10px",
+                  marginRight: "10px",
+                  color: "#e5c07b",
+                  fontSize: "12px",
+                }}
+              >
+                ⭐ {sentence.rating}
+              </span>
+              <span
+                style={{
+                  marginRight: "10px",
                   color: "#888",
                   fontSize: "12px",
                 }}
               >
                 👁 {sentence.review_count}
               </span>
-            </div>
-
-            <div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();

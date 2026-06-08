@@ -262,3 +262,25 @@ export const incrementReviewCount = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateRating = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating } = req.body;
+
+    const result = await db.query(
+      `
+      UPDATE sentences
+      SET rating = $1
+      WHERE id = $2
+      RETURNING *
+      `,
+      [rating, id],
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};

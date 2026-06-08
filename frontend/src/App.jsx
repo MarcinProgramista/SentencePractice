@@ -292,6 +292,7 @@ function App() {
             autoReveal={autoReveal}
             repeatCount={repeatCount}
             revealDelay={revealDelay}
+            onRatingUpdated={fetchSentences}
           />
         </div>
       </div>

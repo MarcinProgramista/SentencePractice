@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
+import { updateRating } from "../api/sentenceApi";
 function SentenceDetails({
   selectedSentence,
   showAnswer,
@@ -8,6 +9,7 @@ function SentenceDetails({
   autoReveal,
   repeatCount,
   revealDelay,
+  onRatingUpdated,
 }) {
   const [playCount, setPlayCount] = useState(0);
   const audioRef = useRef(null);
@@ -34,7 +36,15 @@ function SentenceDetails({
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }
+  const handleRating = async (rating) => {
+    try {
+      await updateRating(selectedSentence.id, rating);
 
+      await onRatingUpdated();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       <h1
@@ -61,14 +71,23 @@ function SentenceDetails({
         />
       </audio>
       {!showAnswer && (
-        <p
-          style={{
-            color: "#888",
-            fontSize: "0.9rem",
-          }}
-        >
-          Click sentence to reveal translation
-        </p>
+        <>
+          <p
+            style={{
+              color: "#888",
+              fontSize: "0.9rem",
+            }}
+          >
+            Click sentence to reveal translation
+          </p>
+          <div style={{ marginTop: "20px" }}>
+            <button onClick={() => handleRating(1)}>⭐1</button>
+            <button onClick={() => handleRating(2)}>⭐2</button>
+            <button onClick={() => handleRating(3)}>⭐3</button>
+            <button onClick={() => handleRating(4)}>⭐4</button>
+            <button onClick={() => handleRating(5)}>⭐5</button>
+          </div>
+        </>
       )}
       {showAnswer && (
         <>
