@@ -27,6 +27,9 @@ function App() {
   const [repeatCount, setRepeatCount] = useState(1);
   const [parts, setParts] = useState([]);
   const [selectedPartId, setSelectedPartId] = useState(1);
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [randomMode, setRandomMode] = useState(false);
+
   useEffect(() => {
     const fetchParts = async () => {
       const data = await getParts();
@@ -52,6 +55,7 @@ function App() {
   const filteredSentences = sentences.filter(
     (sentence) =>
       sentence.part_id === selectedPartId &&
+      (selectedRating === 0 || sentence.rating === selectedRating) &&
       (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
         sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );
@@ -70,10 +74,19 @@ function App() {
       (sentence) => sentence.id === selectedSentence.id,
     );
 
+    if (randomMode && filteredSentences.length > 1) {
+      let randomIndex;
+
+      do {
+        randomIndex = Math.floor(Math.random() * filteredSentences.length);
+      } while (filteredSentences[randomIndex].id === selectedSentence.id);
+
+      setSelectedSentence(filteredSentences[randomIndex]);
+      return;
+    }
+
     if (currentIndex < filteredSentences.length - 1) {
       setSelectedSentence(filteredSentences[currentIndex + 1]);
-
-      // setShowAnswer(false);
     }
   };
   const handlePrevious = () => {
@@ -126,6 +139,9 @@ function App() {
 
     return () => clearTimeout(timer);
   }, [autoMode, selectedSentence]);
+  const currentPartCount = sentences.filter(
+    (sentence) => sentence.part_id === selectedPartId,
+  ).length;
   return (
     <div
       style={{
@@ -155,19 +171,56 @@ function App() {
               marginBottom: "15px",
             }}
           >
-            {parts.map((part) => (
+            {parts.map((part) => {
+              const count = sentences.filter(
+                (sentence) => sentence.part_id === part.id,
+              ).length;
+
+              return (
+                <button
+                  key={part.id}
+                  onClick={() => setSelectedPartId(part.id)}
+                  style={{
+                    backgroundColor:
+                      selectedPartId === part.id ? "#5e81ac" : "#2e3440",
+                  }}
+                >
+                  {part.level_name} - {part.name} ({count}/200)
+                </button>
+              );
+            })}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              flexWrap: "wrap",
+              marginBottom: "15px",
+            }}
+          >
+            <button
+              onClick={() => setSelectedRating(0)}
+              style={{
+                backgroundColor: selectedRating === 0 ? "#5e81ac" : "#2e3440",
+              }}
+            >
+              All ⭐
+            </button>
+
+            {[1, 2, 3, 4, 5].map((rating) => (
               <button
-                key={part.id}
-                onClick={() => setSelectedPartId(part.id)}
+                key={rating}
+                onClick={() => setSelectedRating(rating)}
                 style={{
                   backgroundColor:
-                    selectedPartId === part.id ? "#5e81ac" : "#2e3440",
+                    selectedRating === rating ? "#e5c07b" : "#2e3440",
                 }}
               >
-                {part.level_name} - {part.name}
+                ⭐{rating}
               </button>
             ))}
           </div>
+
           <button
             onClick={() => setShowForm(!showForm)}
             style={{
@@ -185,6 +238,7 @@ function App() {
               editingSentence={editingSentence}
               setEditingSentence={setEditingSentence}
               setShowForm={setShowForm}
+              currentPartCount={currentPartCount}
             />
           )}
 
@@ -212,6 +266,14 @@ function App() {
               onChange={(e) => setAutoMode(e.target.checked)}
             />
             Auto Mode
+          </label>
+          <label style={{ display: "block", marginBottom: "8px" }}>
+            <input
+              type="checkbox"
+              checked={randomMode}
+              onChange={(e) => setRandomMode(e.target.checked)}
+            />
+            Random Mode
           </label>
           <label style={{ display: "block", marginBottom: "8px" }}>
             <input

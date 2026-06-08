@@ -8,6 +8,7 @@ function AddSentenceForm({
   editingSentence,
   setEditingSentence,
   setShowForm,
+  currentPartCount,
 }) {
   const [sourceText, setSourceText] = useState("");
   const [targetText, setTargetText] = useState("");
@@ -56,6 +57,10 @@ function AddSentenceForm({
         await updateSentence(editingSentence.id, sentence);
         setEditingSentence(null);
       } else {
+        if (currentPartCount >= 200) {
+          alert("This part already contains 200 sentences");
+          return;
+        }
         await createSentence(sentence);
       }
 
