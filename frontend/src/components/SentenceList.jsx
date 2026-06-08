@@ -50,6 +50,16 @@ function SentenceList({
               </span>
 
               <span>{sentence.target_text}</span>
+
+              <span
+                style={{
+                  marginLeft: "10px",
+                  color: "#888",
+                  fontSize: "12px",
+                }}
+              >
+                👁 {sentence.review_count}
+              </span>
             </div>
 
             <div>

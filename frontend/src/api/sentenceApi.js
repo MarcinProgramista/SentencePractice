@@ -34,3 +34,9 @@ export const updateSentence = async (id, sentence) => {
 
   return response.data;
 };
+
+export const incrementReviewCount = async (id) => {
+  const response = await axios.post(`${API_URL}/${id}/review`);
+
+  return response.data;
+};

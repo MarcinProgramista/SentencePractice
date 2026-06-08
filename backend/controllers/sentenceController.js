@@ -241,3 +241,24 @@ export const updateSentence = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const incrementReviewCount = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await db.query(
+      `
+      UPDATE sentences
+      SET review_count = review_count + 1
+      WHERE id = $1
+      RETURNING *
+      `,
+      [id],
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+};

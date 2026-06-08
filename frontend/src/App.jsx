@@ -2,7 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import { getSentences, deleteSentence } from "./api/sentenceApi";
+import {
+  getSentences,
+  deleteSentence,
+  incrementReviewCount,
+} from "./api/sentenceApi";
 import SentenceList from "./components/SentenceList.jsx";
 import AddSentenceForm from "./components/AddSentenceForm";
 import SentenceDetails from "./components/SentenceDetails";
@@ -51,7 +55,11 @@ function App() {
       (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
         sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );
-  const handleSentenceClick = (sentence) => {
+  const handleSentenceClick = async (sentence) => {
+    await incrementReviewCount(sentence.id);
+
+    await fetchSentences();
+
     setSelectedSentence(sentence);
     setShowAnswer(false);
   };

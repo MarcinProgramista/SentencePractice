@@ -6,6 +6,7 @@ import {
   searchSentences,
   getSentenceById,
   updateSentence,
+  incrementReviewCount,
 } from "../controllers/sentenceController.js";
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/", getSentences);
 router.post("/", createSentence);
 router.put("/:id", updateSentence);
 router.delete("/:id", deleteSentence);
+router.post("/:id/review", incrementReviewCount);
 
 export default router;
