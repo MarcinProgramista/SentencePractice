@@ -10,6 +10,7 @@ function SentenceDetails({
   repeatCount,
   revealDelay,
   onRatingUpdated,
+  setSelectedSentence,
 }) {
   const [playCount, setPlayCount] = useState(0);
   const audioRef = useRef(null);
@@ -38,7 +39,9 @@ function SentenceDetails({
   }
   const handleRating = async (rating) => {
     try {
-      await updateRating(selectedSentence.id, rating);
+      const updatedSentence = await updateRating(selectedSentence.id, rating);
+
+      setSelectedSentence(updatedSentence);
 
       await onRatingUpdated();
     } catch (error) {
@@ -80,12 +83,20 @@ function SentenceDetails({
           >
             Click sentence to reveal translation
           </p>
-          <div style={{ marginTop: "20px" }}>
-            <button onClick={() => handleRating(1)}>⭐1</button>
-            <button onClick={() => handleRating(2)}>⭐2</button>
-            <button onClick={() => handleRating(3)}>⭐3</button>
-            <button onClick={() => handleRating(4)}>⭐4</button>
-            <button onClick={() => handleRating(5)}>⭐5</button>
+
+          <div style={{ marginTop: "20px", fontSize: "24px" }}>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                onClick={() => handleRating(star)}
+                style={{
+                  cursor: "pointer",
+                  color: star <= selectedSentence.rating ? "#e5c07b" : "#555",
+                }}
+              >
+                ★
+              </span>
+            ))}
           </div>
         </>
       )}

@@ -355,6 +355,7 @@ function App() {
             repeatCount={repeatCount}
             revealDelay={revealDelay}
             onRatingUpdated={fetchSentences}
+            setSelectedSentence={setSelectedSentence}
           />
         </div>
       </div>
