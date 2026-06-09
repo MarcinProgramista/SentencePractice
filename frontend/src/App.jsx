@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
@@ -44,6 +45,7 @@ function App() {
 
     fetchParts();
   }, []);
+
   const fetchSentences = async () => {
     const data = await getSentences();
     setSentences(data);
@@ -63,6 +65,23 @@ function App() {
       (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
         sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowRight") {
+        handleNext();
+      }
+
+      if (e.key === "ArrowLeft") {
+        handlePrevious();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedSentence, filteredSentences]);
   const handleSentenceClick = async (sentence) => {
     await incrementReviewCount(sentence.id);
 

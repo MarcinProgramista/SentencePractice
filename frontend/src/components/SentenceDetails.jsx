@@ -37,6 +37,53 @@ function SentenceDetails({
 
     return () => clearTimeout(timer);
   }, [selectedSentence, autoReveal]);
+  const handleRating = async (rating) => {
+    if (!selectedSentence) return;
+
+    try {
+      const updatedSentence = await updateRating(
+        selectedSentence.id,
+        rating,
+        learningMode,
+      );
+
+      setSelectedSentence(updatedSentence);
+
+      await onRatingUpdated();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const tag = document.activeElement?.tagName;
+
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
+        return;
+      }
+
+      if (e.code === "Space") {
+        e.preventDefault();
+        setShowAnswer((prev) => !prev);
+      }
+
+      if (e.key.toLowerCase() === "a") {
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(() => {});
+        }
+      }
+      if (selectedSentence && ["1", "2", "3", "4", "5"].includes(e.key)) {
+        handleRating(Number(e.key));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedSentence, learningMode]);
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }
@@ -54,22 +101,18 @@ function SentenceDetails({
     learningMode === "DE_EN"
       ? selectedSentence.rating_de_en
       : selectedSentence.rating_en_de;
-  const handleRating = async (rating) => {
-    try {
-      const updatedSentence = await updateRating(
-        selectedSentence.id,
-        rating,
-        learningMode,
-      );
-      setSelectedSentence(updatedSentence);
 
-      await onRatingUpdated();
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "80vh",
+        textAlign: "center",
+      }}
+    >
       <h1
         onClick={() => setShowAnswer(!showAnswer)}
         style={{ cursor: "pointer" }}
