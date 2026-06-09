@@ -56,7 +56,10 @@ function App() {
   const filteredSentences = sentences.filter(
     (sentence) =>
       sentence.part_id === selectedPartId &&
-      (selectedRating === 0 || sentence.rating === selectedRating) &&
+      (selectedRating === 0 ||
+        (learningMode === "DE_EN"
+          ? sentence.rating_de_en === selectedRating
+          : sentence.rating_en_de === selectedRating)) &&
       (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
         sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );
