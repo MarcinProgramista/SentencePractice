@@ -5,6 +5,7 @@ function SentenceList({
   selectedSentence,
   handleDeleteSentence,
   handleEditSentence,
+  learningMode,
 }) {
   return (
     <div
@@ -49,7 +50,11 @@ function SentenceList({
                 {String(index + 1).padStart(3, "0")}
               </span>
 
-              <span>{sentence.target_text}</span>
+              <span>
+                {learningMode === "DE_EN"
+                  ? sentence.target_text
+                  : sentence.source_text}
+              </span>
             </div>
 
             <div>
@@ -60,7 +65,10 @@ function SentenceList({
                   fontSize: "12px",
                 }}
               >
-                ⭐ {sentence.rating}
+                ⭐{" "}
+                {learningMode === "DE_EN"
+                  ? sentence.rating_de_en
+                  : sentence.rating_en_de}
               </span>
               <span
                 style={{

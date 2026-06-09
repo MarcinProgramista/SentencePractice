@@ -11,18 +11,21 @@ function SentenceDetails({
   revealDelay,
   onRatingUpdated,
   setSelectedSentence,
+  learningMode,
 }) {
   const [playCount, setPlayCount] = useState(0);
   const audioRef = useRef(null);
   useEffect(() => {
-    if (audioRef.current) {
-      setPlayCount(1);
+    if (!audioRef.current) return;
 
-      audioRef.current.load();
+    setPlayCount(1);
 
+    audioRef.current.load();
+
+    if (learningMode === "DE_EN") {
       audioRef.current.play().catch(() => {});
     }
-  }, [selectedSentence]);
+  }, [selectedSentence, learningMode]);
   useEffect(() => {
     if (!autoReveal || !selectedSentence) return;
 
@@ -37,10 +40,27 @@ function SentenceDetails({
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }
+  const question =
+    learningMode === "DE_EN"
+      ? selectedSentence.target_text
+      : selectedSentence.source_text;
+
+  const answer =
+    learningMode === "DE_EN"
+      ? selectedSentence.source_text
+      : selectedSentence.target_text;
+
+  const currentRating =
+    learningMode === "DE_EN"
+      ? selectedSentence.rating_de_en
+      : selectedSentence.rating_en_de;
   const handleRating = async (rating) => {
     try {
-      const updatedSentence = await updateRating(selectedSentence.id, rating);
-
+      const updatedSentence = await updateRating(
+        selectedSentence.id,
+        rating,
+        learningMode,
+      );
       setSelectedSentence(updatedSentence);
 
       await onRatingUpdated();
@@ -54,7 +74,7 @@ function SentenceDetails({
         onClick={() => setShowAnswer(!showAnswer)}
         style={{ cursor: "pointer" }}
       >
-        {selectedSentence.target_text}
+        {question}
       </h1>
       <audio
         ref={audioRef}
@@ -91,7 +111,7 @@ function SentenceDetails({
                 onClick={() => handleRating(star)}
                 style={{
                   cursor: "pointer",
-                  color: star <= selectedSentence.rating ? "#e5c07b" : "#555",
+                  color: star <= currentRating ? "#e5c07b" : "#555",
                 }}
               >
                 ★
@@ -108,7 +128,7 @@ function SentenceDetails({
               fontStyle: "italic",
             }}
           >
-            {selectedSentence.source_text}
+            {answer}
           </h1>
         </>
       )}

@@ -266,12 +266,14 @@ export const incrementReviewCount = async (req, res) => {
 export const updateRating = async (req, res) => {
   try {
     const { id } = req.params;
-    const { rating } = req.body;
+    const { rating, learningMode } = req.body;
+
+    const column = learningMode === "DE_EN" ? "rating_de_en" : "rating_en_de";
 
     const result = await db.query(
       `
       UPDATE sentences
-      SET rating = $1
+      SET ${column} = $1
       WHERE id = $2
       RETURNING *
       `,

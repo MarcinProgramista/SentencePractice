@@ -29,6 +29,7 @@ function App() {
   const [selectedPartId, setSelectedPartId] = useState(1);
   const [selectedRating, setSelectedRating] = useState(0);
   const [randomMode, setRandomMode] = useState(false);
+  const [learningMode, setLearningMode] = useState("DE_EN");
 
   useEffect(() => {
     const fetchParts = async () => {
@@ -170,6 +171,34 @@ function App() {
               marginBottom: "15px",
             }}
           >
+            {" "}
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                marginBottom: "15px",
+              }}
+            >
+              <button
+                onClick={() => setLearningMode("DE_EN")}
+                style={{
+                  backgroundColor:
+                    learningMode === "DE_EN" ? "#5e81ac" : "#2e3440",
+                }}
+              >
+                DE → EN
+              </button>
+
+              <button
+                onClick={() => setLearningMode("EN_DE")}
+                style={{
+                  backgroundColor:
+                    learningMode === "EN_DE" ? "#5e81ac" : "#2e3440",
+                }}
+              >
+                EN → DE
+              </button>
+            </div>
             <select
               value={selectedPartId}
               onChange={(e) => setSelectedPartId(Number(e.target.value))}
@@ -194,7 +223,6 @@ function App() {
                 );
               })}
             </select>
-
             <select
               value={selectedRating}
               onChange={(e) => setSelectedRating(Number(e.target.value))}
@@ -371,6 +399,7 @@ function App() {
               setShowAnswer={setShowAnswer}
               handleDeleteSentence={handleDeleteSentence}
               handleEditSentence={handleEditSentence}
+              learningMode={learningMode}
             />
           </div>
         </div>
@@ -391,6 +420,7 @@ function App() {
             revealDelay={revealDelay}
             onRatingUpdated={fetchSentences}
             setSelectedSentence={setSelectedSentence}
+            learningMode={learningMode}
           />
         </div>
       </div>

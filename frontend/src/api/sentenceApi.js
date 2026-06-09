@@ -40,9 +40,10 @@ export const incrementReviewCount = async (id) => {
 
   return response.data;
 };
-export const updateRating = async (id, rating) => {
+export const updateRating = async (id, rating, learningMode) => {
   const response = await axios.post(`${API_URL}/${id}/rating`, {
     rating,
+    learningMode,
   });
 
   return response.data;
