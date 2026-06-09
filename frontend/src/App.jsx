@@ -161,9 +161,6 @@ function App() {
             borderRight: "1px solid #3b4252",
             padding: "10px",
             textAlign: "left",
-
-            maxHeight: "80vh",
-            overflowY: "auto",
           }}
         >
           <div
@@ -302,14 +299,6 @@ function App() {
             >
               Auto Reveal
             </button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              marginBottom: "15px",
-            }}
-          >
             <select
               title="Reveal Delay"
               value={revealDelay}
@@ -329,7 +318,24 @@ function App() {
               <option value={5}>Reveal: 5s</option>
               <option value={10}>Reveal: 10s</option>
             </select>
-
+            <select
+              title="Repeat Audio"
+              value={repeatCount}
+              onChange={(e) => setRepeatCount(Number(e.target.value))}
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+              }}
+            >
+              <option value={1}>1x</option>
+              <option value={2}>2x</option>
+              <option value={3}>3x</option>
+              <option value={5}>5x</option>
+            </select>
             <select
               title="Next Delay"
               value={nextDelay}
@@ -349,36 +355,24 @@ function App() {
               <option value={5}>Next: 5s</option>
               <option value={10}>Next: 10s</option>
             </select>
-
-            <select
-              title="Repeat Audio"
-              value={repeatCount}
-              onChange={(e) => setRepeatCount(Number(e.target.value))}
-              style={{
-                flex: 1,
-                padding: "8px",
-                borderRadius: "6px",
-                backgroundColor: "#2e3440",
-                color: "#eceff4",
-                border: "1px solid #3b4252",
-              }}
-            >
-              <option value={1}>1x</option>
-              <option value={2}>2x</option>
-              <option value={3}>3x</option>
-              <option value={5}>5x</option>
-            </select>
           </div>
-
-          <SentenceList
-            sentences={filteredSentences}
-            onSentenceClick={handleSentenceClick}
-            selectedSentence={selectedSentence}
-            showAnswer={showAnswer}
-            setShowAnswer={setShowAnswer}
-            handleDeleteSentence={handleDeleteSentence}
-            handleEditSentence={handleEditSentence}
-          />
+          <div
+            style={{
+              height: "70vh",
+              overflowY: "auto",
+              paddingRight: "5px",
+            }}
+          >
+            <SentenceList
+              sentences={filteredSentences}
+              onSentenceClick={handleSentenceClick}
+              selectedSentence={selectedSentence}
+              showAnswer={showAnswer}
+              setShowAnswer={setShowAnswer}
+              handleDeleteSentence={handleDeleteSentence}
+              handleEditSentence={handleEditSentence}
+            />
+          </div>
         </div>
         <div
           style={{
