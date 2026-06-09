@@ -1,6 +1,8 @@
 # Sentence Practice
 
 Language learning application for practicing German sentences.
+<img width="1664" height="918" alt="image" src="https://github.com/user-attachments/assets/ae9c56ad-8982-4d6a-aaf2-945659ea6b53" />
+
 
 ## Features
 
@@ -20,3 +22,4 @@ Language learning application for practicing German sentences.
 - Express
 - PostgreSQL
 - Axios
+
