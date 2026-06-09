@@ -1,2 +1,22 @@
-# SentencePractice
-Full-stack language learning application built with React, Node.js, Express and PostgreSQL. Features audio generation, sentence ratings, review statistics, filtering, and bidirectional German-English practice.
+# Sentence Practice
+
+Language learning application for practicing German sentences.
+
+## Features
+
+- German ↔ English learning modes
+- Audio playback
+- Sentence ratings
+- Review statistics
+- Search
+- Random mode
+- Auto mode
+- Parts and levels (A1, A2, etc.)
+
+## Tech Stack
+
+- React
+- Node.js
+- Express
+- PostgreSQL
+- Axios
