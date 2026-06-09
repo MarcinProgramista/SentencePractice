@@ -157,68 +157,66 @@ function App() {
       >
         <div
           style={{
-            width: "500px",
+            width: "600px",
             borderRight: "1px solid #3b4252",
             padding: "10px",
             textAlign: "left",
+
+            maxHeight: "80vh",
+            overflowY: "auto",
           }}
         >
           <div
             style={{
               display: "flex",
-              gap: "8px",
-              flexWrap: "wrap",
+              gap: "10px",
               marginBottom: "15px",
             }}
           >
-            {parts.map((part) => {
-              const count = sentences.filter(
-                (sentence) => sentence.part_id === part.id,
-              ).length;
-
-              return (
-                <button
-                  key={part.id}
-                  onClick={() => setSelectedPartId(part.id)}
-                  style={{
-                    backgroundColor:
-                      selectedPartId === part.id ? "#5e81ac" : "#2e3440",
-                  }}
-                >
-                  {part.level_name} - {part.name} ({count}/200)
-                </button>
-              );
-            })}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-              flexWrap: "wrap",
-              marginBottom: "15px",
-            }}
-          >
-            <button
-              onClick={() => setSelectedRating(0)}
+            <select
+              value={selectedPartId}
+              onChange={(e) => setSelectedPartId(Number(e.target.value))}
               style={{
-                backgroundColor: selectedRating === 0 ? "#5e81ac" : "#2e3440",
+                flex: 1,
+                padding: "10px",
+                borderRadius: "6px",
+                border: "1px solid #3b4252",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
               }}
             >
-              All ⭐
-            </button>
+              {parts.map((part) => {
+                const count = sentences.filter(
+                  (sentence) => sentence.part_id === part.id,
+                ).length;
 
-            {[1, 2, 3, 4, 5].map((rating) => (
-              <button
-                key={rating}
-                onClick={() => setSelectedRating(rating)}
-                style={{
-                  backgroundColor:
-                    selectedRating === rating ? "#e5c07b" : "#2e3440",
-                }}
-              >
-                ⭐{rating}
-              </button>
-            ))}
+                return (
+                  <option key={part.id} value={part.id}>
+                    {part.level_name} - {part.name} ({count}/200)
+                  </option>
+                );
+              })}
+            </select>
+
+            <select
+              value={selectedRating}
+              onChange={(e) => setSelectedRating(Number(e.target.value))}
+              style={{
+                width: "140px",
+                padding: "10px",
+                borderRadius: "6px",
+                border: "1px solid #3b4252",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
+              }}
+            >
+              <option value={0}>All ⭐</option>
+              <option value={1}>⭐ 1</option>
+              <option value={2}>⭐ 2</option>
+              <option value={3}>⭐ 3</option>
+              <option value={4}>⭐ 4</option>
+              <option value={5}>⭐ 5</option>
+            </select>
           </div>
 
           <button
@@ -259,74 +257,117 @@ function App() {
               boxSizing: "border-box",
             }}
           />
-          <label style={{ display: "block", marginBottom: "8px" }}>
-            <input
-              type="checkbox"
-              checked={autoMode}
-              onChange={(e) => setAutoMode(e.target.checked)}
-            />
-            Auto Mode
-          </label>
-          <label style={{ display: "block", marginBottom: "8px" }}>
-            <input
-              type="checkbox"
-              checked={randomMode}
-              onChange={(e) => setRandomMode(e.target.checked)}
-            />
-            Random Mode
-          </label>
-          <label style={{ display: "block", marginBottom: "8px" }}>
-            <input
-              type="checkbox"
-              checked={autoReveal}
-              onChange={(e) => setAutoReveal(e.target.checked)}
-            />
-            Auto Reveal Translation
-          </label>
-          <div style={{ marginBottom: "15px" }}>
-            <label>
-              Reveal Delay:
-              <select
-                value={revealDelay}
-                onChange={(e) => setRevealDelay(Number(e.target.value))}
-              >
-                <option value={1}>1 second</option>
-                <option value={2}>2 seconds</option>
-                <option value={3}>3 seconds</option>
-                <option value={5}>5 seconds</option>
-                <option value={10}>10 seconds</option>
-              </select>
-            </label>
-          </div>
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              marginBottom: "15px",
+            }}
+          >
+            <button
+              onClick={() => setAutoMode(!autoMode)}
+              style={{
+                backgroundColor: autoMode ? "#5e81ac" : "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+                borderRadius: "6px",
+                padding: "8px 12px",
+              }}
+            >
+              Auto
+            </button>
 
-          <div style={{ marginBottom: "15px" }}>
-            <label>
-              Next Delay:
-              <select
-                value={nextDelay}
-                onChange={(e) => setNextDelay(Number(e.target.value))}
-              >
-                <option value={1}>1 second</option>
-                <option value={2}>2 seconds</option>
-                <option value={3}>3 seconds</option>
-                <option value={5}>5 seconds</option>
-                <option value={10}>10 seconds</option>
-              </select>
-            </label>
+            <button
+              onClick={() => setRandomMode(!randomMode)}
+              style={{
+                backgroundColor: randomMode ? "#5e81ac" : "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+                borderRadius: "6px",
+                padding: "8px 12px",
+              }}
+            >
+              Random
+            </button>
+
+            <button
+              onClick={() => setAutoReveal(!autoReveal)}
+              style={{
+                backgroundColor: autoReveal ? "#5e81ac" : "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+                borderRadius: "6px",
+                padding: "8px 12px",
+              }}
+            >
+              Auto Reveal
+            </button>
           </div>
-          <div style={{ marginBottom: "15px" }}>
-            <label>
-              Repeat audio:
-              <select
-                value={repeatCount}
-                onChange={(e) => setRepeatCount(Number(e.target.value))}
-              >
-                <option value={1}>1 time</option>
-                <option value={2}>2 times</option>
-                <option value={3}>3 times</option>
-                <option value={5}>5 times</option>
-              </select>
-            </label>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginBottom: "15px",
+            }}
+          >
+            <select
+              title="Reveal Delay"
+              value={revealDelay}
+              onChange={(e) => setRevealDelay(Number(e.target.value))}
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+              }}
+            >
+              <option value={1}>Reveal: 1s</option>
+              <option value={2}>Reveal: 2s</option>
+              <option value={3}>Reveal: 3s</option>
+              <option value={5}>Reveal: 5s</option>
+              <option value={10}>Reveal: 10s</option>
+            </select>
+
+            <select
+              title="Next Delay"
+              value={nextDelay}
+              onChange={(e) => setNextDelay(Number(e.target.value))}
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+              }}
+            >
+              <option value={1}>Next: 1s</option>
+              <option value={2}>Next: 2s</option>
+              <option value={3}>Next: 3s</option>
+              <option value={5}>Next: 5s</option>
+              <option value={10}>Next: 10s</option>
+            </select>
+
+            <select
+              title="Repeat Audio"
+              value={repeatCount}
+              onChange={(e) => setRepeatCount(Number(e.target.value))}
+              style={{
+                flex: 1,
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "#2e3440",
+                color: "#eceff4",
+                border: "1px solid #3b4252",
+              }}
+            >
+              <option value={1}>1x</option>
+              <option value={2}>2x</option>
+              <option value={3}>3x</option>
+              <option value={5}>5x</option>
+            </select>
           </div>
 
           <SentenceList
