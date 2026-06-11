@@ -1,4 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useEffect, useRef } from "react";
+
 function SentenceList({
   sentences,
   onSentenceClick,
@@ -7,6 +10,13 @@ function SentenceList({
   handleEditSentence,
   learningMode,
 }) {
+  const selectedRef = useRef(null);
+  useEffect(() => {
+    selectedRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [selectedSentence]);
   return (
     <div
       style={{
@@ -18,6 +28,7 @@ function SentenceList({
       {sentences.map((sentence, index) => (
         <div
           key={sentence.id}
+          ref={selectedSentence?.id === sentence.id ? selectedRef : null}
           onClick={() => onSentenceClick(sentence)}
           style={{
             width: "90%",

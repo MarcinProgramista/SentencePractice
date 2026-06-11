@@ -40,7 +40,24 @@ export const createSentence = async (req, res) => {
       part_id,
     } = req.body;
 
-    const audio_file = await generateAudio(target_text);
+    const languageResult = await db.query(
+      `
+      SELECT code
+      FROM languages
+      WHERE id = $1
+      `,
+      [target_language_id],
+    );
+
+    if (languageResult.rowCount === 0) {
+      return res.status(400).json({
+        error: "Target language not found",
+      });
+    }
+
+    const languageCode = languageResult.rows[0].code;
+
+    const audio_file = await generateAudio(target_text, languageCode);
 
     const result = await db.query(
       `
@@ -51,7 +68,7 @@ export const createSentence = async (req, res) => {
         target_text,
         audio_file,
         part_id
-)
+      )
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
       `,
@@ -71,7 +88,6 @@ export const createSentence = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 /* ==============================
     DELETE SENTENCE
 =================================*/
@@ -209,11 +225,28 @@ export const updateSentence = async (req, res) => {
       }
     }
 
-    const audio_file = await generateAudio(target_text);
+    const languageResult = await db.query(
+      `
+      SELECT code
+      FROM languages
+      WHERE id = $1
+      `,
+      [target_language_id],
+    );
+
+    if (languageResult.rowCount === 0) {
+      return res.status(400).json({
+        error: "Target language not found",
+      });
+    }
+
+    const languageCode = languageResult.rows[0].code;
+
+    const audio_file = await generateAudio(target_text, languageCode);
 
     const result = await db.query(
       `
-     UPDATE sentences
+      UPDATE sentences
       SET
         source_language_id = $1,
         target_language_id = $2,
@@ -241,7 +274,6 @@ export const updateSentence = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const incrementReviewCount = async (req, res) => {
   try {
     const { id } = req.params;

@@ -3,9 +3,18 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
-export const generateAudio = async (text) => {
+export const generateAudio = async (text, languageCode) => {
   const now = new Date();
+  const voices = {
+    de: "de-DE-ConradNeural",
+    fr: "fr-FR-HenriNeural",
+    en: "en-US-GuyNeural",
+  };
+  const voice = voices[languageCode];
 
+  if (!voice) {
+    throw new Error(`Unsupported language: ${languageCode}`);
+  }
   const timestamp =
     now.getFullYear() +
     String(now.getMonth() + 1).padStart(2, "0") +
@@ -23,7 +32,7 @@ export const generateAudio = async (text) => {
   const fileName = `${timestamp}_${safeText}.mp3`;
 
   await execAsync(
-    `edge-tts --voice de-DE-KatjaNeural --text "${text}" --write-media audio/${fileName}`,
+    `edge-tts --voice ${voice} --text "${text}" --write-media audio/${fileName}`,
   );
 
   return fileName;
