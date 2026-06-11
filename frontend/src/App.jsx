@@ -193,7 +193,6 @@ function App() {
               marginBottom: "15px",
             }}
           >
-            {" "}
             <div
               style={{
                 display: "flex",
@@ -201,25 +200,23 @@ function App() {
                 marginBottom: "15px",
               }}
             >
-              <button
-                onClick={() => setLearningMode("DE_EN")}
+              <select
+                value={learningMode}
+                onChange={(e) => setLearningMode(e.target.value)}
                 style={{
-                  backgroundColor:
-                    learningMode === "DE_EN" ? "#5e81ac" : "#2e3440",
+                  width: "150px",
+                  padding: "10px",
+                  borderRadius: "6px",
+                  border: "1px solid #3b4252",
+                  backgroundColor: "#2e3440",
+                  color: "#eceff4",
                 }}
               >
-                DE → EN
-              </button>
-
-              <button
-                onClick={() => setLearningMode("EN_DE")}
-                style={{
-                  backgroundColor:
-                    learningMode === "EN_DE" ? "#5e81ac" : "#2e3440",
-                }}
-              >
-                EN → DE
-              </button>
+                <option value="DE_EN">German → English</option>
+                <option value="EN_DE">English → German</option>
+                <option value="EN_FR">English → French</option>
+                <option value="FR_EN">French → English</option>
+              </select>
             </div>
             <select
               value={selectedPartId}
@@ -240,7 +237,7 @@ function App() {
 
                 return (
                   <option key={part.id} value={part.id}>
-                    {part.level_name} - {part.name} ({count}/200)
+                    {part.level_name}-{part.name} ({count}/200)
                   </option>
                 );
               })}
@@ -249,7 +246,7 @@ function App() {
               value={selectedRating}
               onChange={(e) => setSelectedRating(Number(e.target.value))}
               style={{
-                width: "140px",
+                width: "130px",
                 padding: "10px",
                 borderRadius: "6px",
                 border: "1px solid #3b4252",

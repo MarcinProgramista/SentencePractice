@@ -14,13 +14,32 @@ function AddSentenceForm({
   const [targetText, setTargetText] = useState("");
   const [parts, setParts] = useState([]);
   const [selectedPartId, setSelectedPartId] = useState("");
+
+  const [languages, setLanguages] = useState([]);
+  const [sourceLanguageId, setSourceLanguageId] = useState(1);
+  const [targetLanguageId, setTargetLanguageId] = useState(2);
+  const fetchLanguages = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/languages");
+
+      const data = await response.json();
+
+      setLanguages(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     if (editingSentence) {
       setSourceText(editingSentence.source_text);
       setTargetText(editingSentence.target_text);
       setSelectedPartId(editingSentence.part_id);
+
+      setSourceLanguageId(editingSentence.source_language_id);
+      setTargetLanguageId(editingSentence.target_language_id);
     }
   }, [editingSentence]);
+
   useEffect(() => {
     const fetchParts = async () => {
       try {
@@ -37,6 +56,7 @@ function AddSentenceForm({
     };
 
     fetchParts();
+    fetchLanguages();
   }, []);
   const handleAddSentence = async () => {
     try {
@@ -45,8 +65,8 @@ function AddSentenceForm({
       }
 
       const sentence = {
-        source_language_id: 1,
-        target_language_id: 2,
+        source_language_id: sourceLanguageId,
+        target_language_id: targetLanguageId,
         source_text: sourceText,
         target_text: targetText,
         audio_file: "",
@@ -59,6 +79,10 @@ function AddSentenceForm({
       } else {
         if (currentPartCount >= 200) {
           alert("This part already contains 200 sentences");
+          return;
+        }
+        if (sourceLanguageId === targetLanguageId) {
+          alert("Source and target language cannot be the same");
           return;
         }
         await createSentence(sentence);
@@ -87,7 +111,38 @@ function AddSentenceForm({
       {editingSentence ? <h2>Update Sentence</h2> : <h2>Add Sentence</h2>}
 
       <div style={{ marginBottom: "10px" }}>
-        <label>English sentence</label>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            marginBottom: "15px",
+          }}
+        >
+          <select
+            value={sourceLanguageId}
+            onChange={(e) => setSourceLanguageId(Number(e.target.value))}
+            style={{ flex: 1 }}
+          >
+            {languages.map((language) => (
+              <option key={language.id} value={language.id}>
+                {language.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={targetLanguageId}
+            onChange={(e) => setTargetLanguageId(Number(e.target.value))}
+            style={{ flex: 1 }}
+          >
+            {languages.map((language) => (
+              <option key={language.id} value={language.id}>
+                {language.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <label>Source sentence</label>
         <br />
         <input
           type="text"
@@ -107,7 +162,7 @@ function AddSentenceForm({
       </div>
 
       <div style={{ marginBottom: "10px" }}>
-        <label>German sentence</label>
+        <label>Target sentence</label>
         <div style={{ marginBottom: "10px" }}>
           <label>Part</label>
           <br />
