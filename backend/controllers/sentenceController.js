@@ -300,8 +300,16 @@ export const updateRating = async (req, res) => {
     const { id } = req.params;
     const { rating, learningMode } = req.body;
 
-    const column = learningMode === "DE_EN" ? "rating_de_en" : "rating_en_de";
+    const ratingColumns = {
+      DE_EN: "rating_de_en",
+      EN_DE: "rating_en_de",
+      EN_FR: "rating_en_fr",
+      FR_EN: "rating_fr_en",
+    };
 
+    const column = ratingColumns[learningMode];
+    console.log("learningMode:", learningMode);
+    console.log("column:", column);
     const result = await db.query(
       `
       UPDATE sentences

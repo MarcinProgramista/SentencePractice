@@ -31,7 +31,10 @@ function App() {
   const [selectedRating, setSelectedRating] = useState(0);
   const [randomMode, setRandomMode] = useState(false);
   const [learningMode, setLearningMode] = useState("DE_EN");
-
+  useEffect(() => {
+    setSelectedSentence(null);
+    setShowAnswer(false);
+  }, [learningMode, selectedPartId]);
   useEffect(() => {
     const fetchParts = async () => {
       const data = await getParts();
@@ -54,14 +57,28 @@ function App() {
   useEffect(() => {
     fetchSentences();
   }, []);
+  const languagePairs = {
+    DE_EN: { source: 1, target: 2 },
+    EN_DE: { source: 1, target: 2 },
+
+    FR_EN: { source: 1, target: 3 },
+    EN_FR: { source: 1, target: 3 },
+  };
+  const ratingFields = {
+    DE_EN: "rating_de_en",
+    EN_DE: "rating_en_de",
+    EN_FR: "rating_en_fr",
+    FR_EN: "rating_fr_en",
+  };
+  const currentPair = languagePairs[learningMode];
 
   const filteredSentences = sentences.filter(
     (sentence) =>
       sentence.part_id === selectedPartId &&
+      sentence.source_language_id === currentPair.source &&
+      sentence.target_language_id === currentPair.target &&
       (selectedRating === 0 ||
-        (learningMode === "DE_EN"
-          ? sentence.rating_de_en === selectedRating
-          : sentence.rating_en_de === selectedRating)) &&
+        sentence[ratingFields[learningMode]] === selectedRating) &&
       (sentence.source_text.toLowerCase().includes(search.toLowerCase()) ||
         sentence.target_text.toLowerCase().includes(search.toLowerCase())),
   );

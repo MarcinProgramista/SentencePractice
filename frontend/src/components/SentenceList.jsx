@@ -17,6 +17,13 @@ function SentenceList({
       block: "center",
     });
   }, [selectedSentence]);
+  const reverseModes = ["DE_EN", "FR_EN"];
+  const ratingFields = {
+    DE_EN: "rating_de_en",
+    EN_DE: "rating_en_de",
+    EN_FR: "rating_en_fr",
+    FR_EN: "rating_fr_en",
+  };
   return (
     <div
       style={{
@@ -62,7 +69,7 @@ function SentenceList({
               </span>
 
               <span>
-                {learningMode === "DE_EN"
+                {reverseModes.includes(learningMode)
                   ? sentence.target_text
                   : sentence.source_text}
               </span>
@@ -76,10 +83,7 @@ function SentenceList({
                   fontSize: "12px",
                 }}
               >
-                ⭐{" "}
-                {learningMode === "DE_EN"
-                  ? sentence.rating_de_en
-                  : sentence.rating_en_de}
+                ⭐ {sentence[ratingFields[learningMode]] ?? 0}
               </span>
               <span
                 style={{

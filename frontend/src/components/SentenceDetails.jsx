@@ -22,9 +22,7 @@ function SentenceDetails({
 
     audioRef.current.load();
 
-    if (learningMode === "DE_EN") {
-      audioRef.current.play().catch(() => {});
-    }
+    audioRef.current.play().catch(() => {});
   }, [selectedSentence, learningMode]);
   useEffect(() => {
     if (!autoReveal || !selectedSentence) return;
@@ -87,20 +85,23 @@ function SentenceDetails({
   if (!selectedSentence) {
     return <div>Select sentence</div>;
   }
-  const question =
-    learningMode === "DE_EN"
-      ? selectedSentence.target_text
-      : selectedSentence.source_text;
+  const reverseModes = ["DE_EN", "FR_EN"];
 
-  const answer =
-    learningMode === "DE_EN"
-      ? selectedSentence.source_text
-      : selectedSentence.target_text;
+  const question = reverseModes.includes(learningMode)
+    ? selectedSentence.target_text
+    : selectedSentence.source_text;
 
-  const currentRating =
-    learningMode === "DE_EN"
-      ? selectedSentence.rating_de_en
-      : selectedSentence.rating_en_de;
+  const answer = reverseModes.includes(learningMode)
+    ? selectedSentence.source_text
+    : selectedSentence.target_text;
+  const ratingFields = {
+    DE_EN: "rating_de_en",
+    EN_DE: "rating_en_de",
+    EN_FR: "rating_en_fr",
+    FR_EN: "rating_fr_en",
+  };
+
+  const currentRating = selectedSentence[ratingFields[learningMode]] ?? 0;
 
   return (
     <div
